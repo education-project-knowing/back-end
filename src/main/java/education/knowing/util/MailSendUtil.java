@@ -14,8 +14,7 @@ public class MailSendUtil {
 
     private final String SUBJECT = "[KNOWING]";
 
-    public boolean sendCertificationMail(String email, String title, String certificationNumber) throws MessagingException {
-
+    public void sendCertificationMail(String email, String title, String certificationNumber) throws MessagingException {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper messageHelper = new MimeMessageHelper(message, true);
 
@@ -25,8 +24,6 @@ public class MailSendUtil {
         messageHelper.setSubject(SUBJECT + title);
         messageHelper.setText(htmlContent, true);
         javaMailSender.send(message);
-
-        return true;
     }
 
     private String getCertificationMessage(String certificationNumber) {
