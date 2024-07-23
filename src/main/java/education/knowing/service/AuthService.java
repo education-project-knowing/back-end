@@ -1,16 +1,23 @@
 package education.knowing.service;
 
 import education.knowing.constant.Role;
+import education.knowing.dto.CertificationDto;
 import education.knowing.dto.UserDto;
 import education.knowing.dto.response.ResponseDto;
+import education.knowing.entity.EmailCertification;
 import education.knowing.entity.User;
 import education.knowing.exception.BusinessError;
 import education.knowing.exception.BusinessLogicException;
+import education.knowing.repository.EmailCertificationRepository;
 import education.knowing.repository.UserRepository;
+import education.knowing.util.MailSendUtil;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Random;
 
 @Service
 @Transactional
@@ -18,6 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final EmailCertificationRepository certificationRepository;
+    private final MailSendUtil mailSendUtil;
 
     public ResponseDto<Object> join(UserDto userDto){
         //중복 체크
@@ -59,4 +68,45 @@ public class AuthService {
         }
         return new ResponseDto<>(200, "사용 가능한 닉네임", null);
     }
+
+    public ResponseDto<CertificationDto> sendCertificationEmail(CertificationDto certificationDto){
+        String email = certificationDto.getEmail();
+        String certificationNumber = createCertificationNumber();
+
+        EmailCertification emailCertification = new EmailCertification();
+        emailCertification.setEmail(email);
+        emailCertification.setCertificationNumber(certificationNumber);
+
+        try {
+            mailSendUtil.sendCertificationMail(email, "회원가입 인증번호 도착!", certificationNumber);
+        } catch (MessagingException e) {
+            throw new BusinessLogicException(BusinessError.MAIL_FAIL);
+        }
+
+        certificationRepository.save(emailCertification);
+
+        certificationDto.setCertificationNumber(certificationNumber);
+        return new ResponseDto<>(200, "이메일 전송 성공", certificationDto);
+    }
+
+    public ResponseDto<Object> certificationEmail(CertificationDto certificationDto){
+        if(!certificationRepository.existsByEmailAndCertificationNumber(
+                certificationDto.getEmail(),
+                certificationDto.getCertificationNumber())){
+            throw new BusinessLogicException(BusinessError.CERTIFICATION_FAIL);
+        }
+        return new ResponseDto<>(200, "이메일 인증 성공", null);
+    }
+
+
+    private String createCertificationNumber(){
+        Random random = new Random();
+        String[] numbers = {"0","1","2","3","4","5","6","7","8","9"};
+        StringBuilder certificationNumber = new StringBuilder();
+        for(int i = 0; i < 6; i++){
+            certificationNumber.append(numbers[random.nextInt(10)]);
+        }
+        return certificationNumber.toString();
+    }
+
 }
