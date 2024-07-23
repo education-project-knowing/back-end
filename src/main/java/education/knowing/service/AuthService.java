@@ -42,7 +42,7 @@ public class AuthService {
                 .role(Role.USER)
                 .build();
 
-        User result = userRepository.save(user);
+        userRepository.save(user);
 
         return new ResponseDto<>(201, "회원가입 성공", null);
     }
