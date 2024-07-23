@@ -1,6 +1,7 @@
 package education.knowing.dto;
 
 import education.knowing.constant.Role;
+import education.knowing.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -10,6 +11,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @ToString
 public class UserDto {
     private Long id;
@@ -21,4 +23,15 @@ public class UserDto {
     private String email;
 
     private String nickname;
+
+    private String role;
+
+    public static UserDto from(User user){
+        return UserDto.builder()
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .nickname(user.getNickname())
+                .role(user.getRole().toString())
+                .build();
+    }
 }
