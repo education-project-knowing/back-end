@@ -1,6 +1,8 @@
 package education.knowing.config;
 
+import education.knowing.filter.JwtAuthenticationFilter;
 import education.knowing.filter.LoginFilter;
+import education.knowing.filter.LogoutFilter;
 import education.knowing.handler.CustomAccessDeniedHandler;
 import education.knowing.handler.CustomAuthenticationEntryPoint;
 import education.knowing.util.JwtUtil;
@@ -32,7 +34,8 @@ import java.util.Collections;
 public class SecurityConfig {
     private final JwtUtil jwtUtil;
     private final AuthenticationConfiguration authenticationConfiguration;
-
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final LogoutFilter logoutFilter;
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
@@ -66,7 +69,8 @@ public class SecurityConfig {
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                         .accessDeniedHandler(new CustomAccessDeniedHandler()))
-
+                .addFilterBefore(jwtAuthenticationFilter, LoginFilter.class)
+                .addFilterBefore(logoutFilter, LoginFilter.class)
                 .addFilterAt(
                         new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil),
                         UsernamePasswordAuthenticationFilter.class);
