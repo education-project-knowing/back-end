@@ -1,13 +1,14 @@
 package education.knowing.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import education.knowing.dto.LoginDto;
+import education.knowing.dto.request.LoginRequestDto;
 import education.knowing.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 
+@Slf4j
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
@@ -28,6 +30,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     public LoginFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
+        this.setFilterProcessesUrl("/api/login");
     }
 
     @Override
@@ -35,7 +38,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         try {
             ObjectMapper mapper = new ObjectMapper();
 
-            LoginDto loginRequest = mapper.readValue(request.getInputStream(), LoginDto.class);
+            LoginRequestDto loginRequest = mapper.readValue(request.getInputStream(), LoginRequestDto.class);
             String username = loginRequest.getUsername();
             String password = loginRequest.getPassword();
 
@@ -43,7 +46,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
             return authenticationManager.authenticate(token);
         } catch (IOException e) {
-            throw new AuthenticationServiceException("인증 실패 : " + e.getMessage());
+            log.error("요청 오류 : " + e.getMessage());
+            throw new AuthenticationServiceException(e.getMessage());
         }
     }
 
