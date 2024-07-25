@@ -2,7 +2,7 @@ package education.knowing.service;
 
 import education.knowing.constant.Role;
 import education.knowing.dto.CertificationDto;
-import education.knowing.dto.UserDto;
+import education.knowing.dto.request.SignUpRequestDto;
 import education.knowing.dto.response.ResponseDto;
 import education.knowing.entity.EmailCertification;
 import education.knowing.entity.User;
@@ -28,11 +28,17 @@ public class AuthService {
     private final EmailCertificationRepository certificationRepository;
     private final MailSendUtil mailSendUtil;
 
-    public ResponseDto<Object> join(UserDto userDto){
+    public ResponseDto<Object> join(SignUpRequestDto userDto){
         //중복 체크
-        idCheck(userDto.getUsername());
-        emailCheck(userDto.getEmail());
-        nicknameCheck(userDto.getNickname());
+        if(idCheck(userDto.getUsername())) {
+            throw new BusinessLogicException(BusinessError.DUPLICATED_ID);
+        }
+        if(emailCheck(userDto.getEmail())){
+            throw new BusinessLogicException(BusinessError.DUPLICATED_EMAIL);
+        }
+        if(nicknameCheck(userDto.getNickname())){
+            throw new BusinessLogicException(BusinessError.DUPLICATED_NICKNAME);
+        }
 
         User user = User.builder()
                 .username(userDto.getUsername())
@@ -42,40 +48,34 @@ public class AuthService {
                 .role(Role.USER)
                 .build();
 
-        userRepository.save(user);
+        User result = userRepository.save(user);
+
 
         return new ResponseDto<>(201, "회원가입 성공", null);
     }
 
     @Transactional(readOnly = true)
-    public ResponseDto<Object> idCheck(String id){
-        if(userRepository.existsByUsername(id)){
-            throw new BusinessLogicException(BusinessError.DUPLICATED_ID);
-        }
-        return new ResponseDto<>(200, "사용 가능한 아이디", null);
+    public boolean idCheck(String id){
+        return userRepository.existsByUsername(id);
     }
     @Transactional(readOnly = true)
-    public ResponseDto<Object> emailCheck(String email){
-        if(userRepository.existsByEmail(email)){
-            throw new BusinessLogicException(BusinessError.DUPLICATED_EMAIL);
-        }
-        return new ResponseDto<>(200, "사용 가능한 이메일", null);
+    public boolean emailCheck(String email){
+        return userRepository.existsByEmail(email);
+
     }
     @Transactional(readOnly = true)
-    public ResponseDto<Object> nicknameCheck(String nickname){
-        if(userRepository.existsByNickname(nickname)){
-            throw new BusinessLogicException(BusinessError.DUPLICATED_NICKNAME);
-        }
-        return new ResponseDto<>(200, "사용 가능한 닉네임", null);
+    public boolean nicknameCheck(String nickname) {
+        return userRepository.existsByNickname(nickname);
     }
 
     public ResponseDto<CertificationDto> sendCertificationEmail(CertificationDto certificationDto){
         String email = certificationDto.getEmail();
         String certificationNumber = createCertificationNumber();
 
-        EmailCertification emailCertification = new EmailCertification();
-        emailCertification.setEmail(email);
-        emailCertification.setCertificationNumber(certificationNumber);
+        EmailCertification emailCertification = EmailCertification.builder()
+                .email(email)
+                .certificationNumber(certificationNumber)
+                .build();
 
         try {
             mailSendUtil.sendCertificationMail(email, "회원가입 인증번호 도착!", certificationNumber);
