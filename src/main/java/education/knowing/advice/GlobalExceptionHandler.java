@@ -5,8 +5,13 @@ import education.knowing.exception.BusinessError;
 import education.knowing.exception.BusinessLogicException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -15,5 +20,22 @@ public class GlobalExceptionHandler {
         BusinessError businessError = e.getBusinessError();
         ResponseDto<Object> responseDto = new ResponseDto<>(businessError.getStatus(), businessError.getMessage(), null);
         return new ResponseEntity<>(responseDto, HttpStatus.valueOf(e.getBusinessError().getStatus()));
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<?> handleValidationException(MethodArgumentNotValidException e) {
+        Map<String, String> errors = new HashMap<>();
+        e.getBindingResult().getAllErrors()
+                .forEach((error) -> {
+                    String fieldName = ((FieldError) error).getField();
+                    String errorMessage = error.getDefaultMessage();
+                    errors.put(fieldName, errorMessage);
+                });
+        ResponseDto<Object> responseDTO = ResponseDto.builder()
+                .status_code(400)
+                .message("사용자 입력 검증 오류 발생")
+                .data(errors)
+                .build();
+        return ResponseEntity.badRequest().body(responseDTO);
     }
 }
