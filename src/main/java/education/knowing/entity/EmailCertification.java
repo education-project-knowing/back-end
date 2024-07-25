@@ -9,7 +9,6 @@ import lombok.*;
 @Entity
 @Table(name = "email_certification_tbl")
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
