@@ -1,10 +1,6 @@
 package education.knowing.dto;
 
-import education.knowing.constant.Role;
 import education.knowing.entity.User;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.*;
 
 @Getter

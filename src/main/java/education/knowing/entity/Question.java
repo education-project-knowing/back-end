@@ -9,7 +9,6 @@ import java.util.List;
 @Entity
 @Table(name = "question_tbl")
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

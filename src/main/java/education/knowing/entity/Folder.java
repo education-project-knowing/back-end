@@ -9,7 +9,6 @@ import java.util.List;
 @Entity
 @Table(name = "folder_tbl")
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

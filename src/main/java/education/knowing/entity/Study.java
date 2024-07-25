@@ -8,7 +8,6 @@ import java.time.LocalTime;
 @Entity
 @Table(name = "study_tbl")
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

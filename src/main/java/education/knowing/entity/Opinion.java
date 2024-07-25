@@ -6,7 +6,6 @@ import lombok.*;
 @Entity
 @Table(name = "opinion_tbl")
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
