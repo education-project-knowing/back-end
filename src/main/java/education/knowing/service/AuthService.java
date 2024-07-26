@@ -4,6 +4,7 @@ import education.knowing.constant.Role;
 import education.knowing.dto.CertificationDto;
 import education.knowing.dto.request.SignUpRequestDto;
 import education.knowing.dto.response.ResponseDto;
+import education.knowing.dto.response.SignUpResponseDto;
 import education.knowing.entity.EmailCertification;
 import education.knowing.entity.User;
 import education.knowing.exception.BusinessError;
@@ -28,7 +29,7 @@ public class AuthService {
     private final EmailCertificationRepository certificationRepository;
     private final MailSendUtil mailSendUtil;
 
-    public ResponseDto<Object> join(SignUpRequestDto userDto){
+    public SignUpResponseDto join(SignUpRequestDto userDto){
         //중복 체크
         if(idCheck(userDto.getUsername())) {
             throw new BusinessLogicException(BusinessError.DUPLICATED_ID);
@@ -50,8 +51,7 @@ public class AuthService {
 
         User result = userRepository.save(user);
 
-
-        return new ResponseDto<>(201, "회원가입 성공", null);
+        return new SignUpResponseDto(result.getId());
     }
 
     @Transactional(readOnly = true)
@@ -68,7 +68,7 @@ public class AuthService {
         return userRepository.existsByNickname(nickname);
     }
 
-    public ResponseDto<CertificationDto> sendCertificationEmail(CertificationDto certificationDto){
+    public CertificationDto sendCertificationEmail(CertificationDto certificationDto){
         String email = certificationDto.getEmail();
         String certificationNumber = createCertificationNumber();
 
@@ -78,7 +78,7 @@ public class AuthService {
                 .build();
 
         try {
-            mailSendUtil.sendCertificationMail(email, "회원가입 인증번호 도착!", certificationNumber);
+            mailSendUtil.sendCertificationMail(email, "회원가입 인증번호 도착", certificationNumber);
         } catch (MessagingException e) {
             throw new BusinessLogicException(BusinessError.MAIL_FAIL);
         }
@@ -86,16 +86,16 @@ public class AuthService {
         certificationRepository.save(emailCertification);
 
         certificationDto.setCertificationNumber(certificationNumber);
-        return new ResponseDto<>(200, "이메일 전송 성공", certificationDto);
+        return certificationDto;
     }
 
-    public ResponseDto<Object> certificationEmail(CertificationDto certificationDto){
+    public ResponseDto<?> certificationEmail(CertificationDto certificationDto){
         if(!certificationRepository.existsByEmailAndCertificationNumber(
                 certificationDto.getEmail(),
                 certificationDto.getCertificationNumber())){
             throw new BusinessLogicException(BusinessError.CERTIFICATION_FAIL);
         }
-        return new ResponseDto<>(200, "이메일 인증 성공", null);
+        return new ResponseDto<>(200, "이메일 인증 성공");
     }
 
 
