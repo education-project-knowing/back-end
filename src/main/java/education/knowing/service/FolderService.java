@@ -22,6 +22,7 @@ public class FolderService {
     private final UserRepository userRepository;
     private final FolderRepository folderRepository;
 
+    @Transactional(readOnly = true)
     public List<FolderResponseDto> getFolderList(String username){
         if(username == null){
             return folderRepository.findAllWithQuestionCount();
