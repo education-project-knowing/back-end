@@ -2,7 +2,6 @@ package education.knowing.repository;
 
 import education.knowing.dto.response.FolderResponseDto;
 import education.knowing.entity.Folder;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,7 +23,7 @@ public interface FolderRepository extends JpaRepository<Folder, Long> {
             "left join f.questionList fq " +
             "left join fq.question q " +
             "left join q.quizList qu " +
-            "WHERE f.isPublic = true  " +
+            "WHERE f.isPublic = true and qu.isRecognized = true " +
             "group by f.fNo " +
             "order by f.createdDate desc")
     List<FolderResponseDto> findAllWithQuestionCountAndRecognizeCount(@Param("username") String username);
