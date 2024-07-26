@@ -14,7 +14,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     //전체 질문
     @Query("select new education.knowing.dto.response.QuestionResponseDto(q.qNo, q.question, q.answer) " +
-            "from Question q join q.folderQnaList fq " +
+            "from Question q " +
             "where q.question like concat('%', :keyword, '%')")
     Page<QuestionResponseDto> findAll(@Param("keyword") String keyword, Pageable pageable);
 
@@ -38,7 +38,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
                                               @Param("isRecognized") boolean isRecognized, @Param("importance")int importance, Pageable pageable);
 
     @Query("select new education.knowing.dto.response.QuestionResponseDto(q.qNo, q.question, q.answer, qi.importance, qi.isRecognized) " +
-            "from Question q join q.questionInfoList qi " +
+            "from Question q left join q.questionInfoList qi " +
             "where q.qNo = :qNo and qi.user.username = :username")
     Optional<QuestionResponseDto> findByIdWithUser(@Param("qNo")Long qNo, @Param("username")String username);
 }
