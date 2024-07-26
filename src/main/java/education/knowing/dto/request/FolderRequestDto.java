@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @NoArgsConstructor
@@ -14,9 +13,6 @@ public class FolderRequestDto {
 
     @NotBlank
     private String intro;
-
-    @Setter
-    private String createBy;
 
     private boolean isPublic;
 

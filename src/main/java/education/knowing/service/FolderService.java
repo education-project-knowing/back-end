@@ -4,7 +4,6 @@ import education.knowing.dto.request.FolderRequestDto;
 import education.knowing.dto.response.FolderResponseDto;
 import education.knowing.dto.response.ResponseDto;
 import education.knowing.entity.Folder;
-import education.knowing.entity.User;
 import education.knowing.exception.BusinessError;
 import education.knowing.exception.BusinessLogicException;
 import education.knowing.repository.FolderRepository;
@@ -32,14 +31,10 @@ public class FolderService {
     }
 
     public FolderResponseDto createFolder(FolderRequestDto folderRequestDto){
-        User createBy = userRepository.findByUsername(folderRequestDto.getCreateBy())
-                .orElseThrow(()-> new BusinessLogicException(BusinessError.USER_NOT_FOUND));
-
         Folder folder = Folder.builder()
                 .title(folderRequestDto.getTitle())
                 .intro(folderRequestDto.getIntro())
                 .isPublic(folderRequestDto.isPublic())
-                .createBy(createBy)
                 .build();
 
         Folder result = folderRepository.save(folder);
@@ -50,12 +45,11 @@ public class FolderService {
         return folderResponseDto;
     }
 
-    public ResponseDto<Object> updateFolder(Long fNo, FolderRequestDto folderRequestDto){
-
+    public ResponseDto<?> updateFolder(Long fNo, String username, FolderRequestDto folderRequestDto){
         Folder folder = folderRepository.findByIdWithUser(fNo)
                 .orElseThrow(()-> new BusinessLogicException(BusinessError.FOLDER_NOT_FOUND));
 
-        if(!folder.getCreateBy().getUsername().equals(folderRequestDto.getCreateBy())){
+        if(!folder.getCreatedBy().equals(username)){
             throw new BusinessLogicException(BusinessError.NOT_FOLDER_CREATOR);
         }
 
@@ -71,11 +65,20 @@ public class FolderService {
         Folder folder = folderRepository.findByIdWithUser(fNo)
                 .orElseThrow(()-> new BusinessLogicException(BusinessError.FOLDER_NOT_FOUND));
 
-        if(!folder.getCreateBy().getUsername().equals(username)){
+        if(!folder.getCreatedBy().equals(username)){
             throw new BusinessLogicException(BusinessError.NOT_FOLDER_CREATOR);
         }
 
-        folder.clearQuestionList();
+        folder.clear();
+
+        folderRepository.delete(folder);
+        return new ResponseDto<>(200, "폴더 삭제 완료");
+    }
+    public ResponseDto<?> deleteFolderByAdmin(Long fNo){
+        Folder folder = folderRepository.findByIdWithUser(fNo)
+                .orElseThrow(()-> new BusinessLogicException(BusinessError.FOLDER_NOT_FOUND));
+
+        folder.clear();
 
         folderRepository.delete(folder);
         return new ResponseDto<>(200, "폴더 삭제 완료");

@@ -30,8 +30,6 @@ public class FolderController {
     }
     @PostMapping
     public ResponseEntity<FolderResponseDto> register(@RequestBody @Valid FolderRequestDto folderRequestDto){
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        folderRequestDto.setCreateBy(username);
         return ResponseEntity.status(HttpStatus.CREATED).body(folderService.createFolder(folderRequestDto));
     }
 
@@ -39,9 +37,8 @@ public class FolderController {
     public ResponseEntity<ResponseDto<?>> update(@PathVariable Long fNo,
                                                     @RequestBody @Valid FolderRequestDto folderRequestDto){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        folderRequestDto.setCreateBy(username);
 
-        return ResponseEntity.ok(folderService.updateFolder(fNo, folderRequestDto));
+        return ResponseEntity.ok(folderService.updateFolder(fNo, username, folderRequestDto));
     }
 
     @DeleteMapping("/{fNo}")
