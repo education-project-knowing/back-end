@@ -4,13 +4,13 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "quiz_tbl")
+@Table(name = "question_info_tbl")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @ToString
-public class Quiz {
+public class QuestionInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,4 +26,9 @@ public class Quiz {
     private int importance;
 
     private boolean isRecognized;
+
+    public void updateQuestionInfo(int importance, boolean isRecognized){
+        this.importance = importance;
+        this.isRecognized = isRecognized;
+    }
 }

@@ -31,7 +31,7 @@ public class Question extends BaseEntity {
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     @Builder.Default
-    private List<Quiz> quizList = new ArrayList<>();
+    private List<QuestionInfo> questionInfoList = new ArrayList<>();
 
     public void updateQuestion(String question, String answer){
         this.question = question;
@@ -40,6 +40,6 @@ public class Question extends BaseEntity {
 
     public void clear(){
         this.folderQnaList = null;
-        this.quizList = null;
+        this.questionInfoList = null;
     }
 }
