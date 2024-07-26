@@ -1,5 +1,6 @@
 package education.knowing.entity;
 
+import education.knowing.entity.base.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @ToString
-public class Folder {
+public class Folder extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long fNo;
@@ -30,7 +31,17 @@ public class Folder {
     @Column(nullable = false, length = 100)
     private String intro;
 
-    @OneToMany(mappedBy = "folder")
+    @OneToMany(mappedBy = "folder", cascade = CascadeType.REMOVE)
     @Builder.Default
     private List<FolderQna> questionList = new ArrayList<>();
+
+    public void updateInfo(String title, String intro, boolean isPublic){
+        this.title = title;
+        this.intro = intro;
+        this.isPublic = isPublic;
+    }
+
+    public void clearQuestionList(){
+        this.questionList = null;
+    }
 }
