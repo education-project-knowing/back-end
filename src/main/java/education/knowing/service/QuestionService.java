@@ -32,7 +32,21 @@ public class QuestionService {
     private final FolderQnaRepository folderQnaRepository;
 
     @Transactional(readOnly = true)
-    public PageResponseDto<QuestionResponseDto> getQuestionList(Long fNo, String username, QuestionPageRequestDto pageRequestDto) {
+    public PageResponseDto<QuestionResponseDto> getQuestionList(String username, QuestionPageRequestDto pageRequestDto) {
+        Pageable pageable = PageRequest.of(pageRequestDto.getPage() - 1,
+                pageRequestDto.getSize(), Sort.by(pageRequestDto.getOrderBy()));
+
+        Page<QuestionResponseDto> result;
+        if (username == null) {
+            result = questionRepository.findAll(pageRequestDto.getKeyword(), pageable);
+        } else {
+            result = questionRepository.findAllWithUser(username, pageRequestDto.getKeyword(), pageRequestDto.isRecognized(), pageRequestDto.getImportance(), pageable);
+        }
+
+        return new PageResponseDto<>(result.getContent(), pageRequestDto, result.getTotalElements());
+    }
+    @Transactional(readOnly = true)
+    public PageResponseDto<QuestionResponseDto> getQuestionListByFolder(Long fNo, String username, QuestionPageRequestDto pageRequestDto) {
         Pageable pageable = PageRequest.of(pageRequestDto.getPage() - 1,
                 pageRequestDto.getSize(), Sort.by(pageRequestDto.getOrderBy()));
 
