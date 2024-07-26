@@ -10,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,7 +19,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BusinessLogicException.class)
     public ResponseEntity<ResponseDto<Object>> handleBusinessLogicException(BusinessLogicException e) {
         BusinessError businessError = e.getBusinessError();
-        ResponseDto<Object> responseDto = new ResponseDto<>(businessError.getStatus(), businessError.getMessage(), null);
+        ResponseDto<Object> responseDto = new ResponseDto<>(businessError.getStatus(), businessError.getMessage());
         return new ResponseEntity<>(responseDto, HttpStatus.valueOf(e.getBusinessError().getStatus()));
     }
 
@@ -37,5 +38,12 @@ public class GlobalExceptionHandler {
                 .data(errors)
                 .build();
         return ResponseEntity.badRequest().body(responseDTO);
+    }
+
+    @ExceptionHandler(SQLException.class)
+    public ResponseEntity<ResponseDto<Object>> databaseException(BusinessLogicException e) {
+        BusinessError businessError = e.getBusinessError();
+        ResponseDto<Object> responseDto = new ResponseDto<>(500, "데이터베이스 에러");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDto);
     }
 }
