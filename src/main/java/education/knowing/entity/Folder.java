@@ -1,6 +1,6 @@
 package education.knowing.entity;
 
-import education.knowing.entity.base.BaseTimeEntity;
+import education.knowing.entity.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,14 +14,10 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @ToString
-public class Folder extends BaseTimeEntity {
+public class Folder extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long fNo;
-
-    @JoinColumn(name = "create_by")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User createBy;
 
     private boolean isPublic;
 
@@ -41,7 +37,7 @@ public class Folder extends BaseTimeEntity {
         this.isPublic = isPublic;
     }
 
-    public void clearQuestionList(){
+    public void clear(){
         this.questionList = null;
     }
 }

@@ -1,5 +1,6 @@
 package education.knowing.entity;
 
+import education.knowing.entity.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @ToString
-public class Question {
+public class Question extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long qNo;
@@ -23,4 +24,22 @@ public class Question {
 
     @Column(nullable = false)
     private String answer;
+
+    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
+    @Builder.Default
+    private List<FolderQna> folderQnaList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
+    @Builder.Default
+    private List<Quiz> quizList = new ArrayList<>();
+
+    public void updateQuestion(String question, String answer){
+        this.question = question;
+        this.answer = answer;
+    }
+
+    public void clear(){
+        this.folderQnaList = null;
+        this.quizList = null;
+    }
 }
