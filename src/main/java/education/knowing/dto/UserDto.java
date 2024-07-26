@@ -27,7 +27,7 @@ public class UserDto {
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .nickname(user.getNickname())
-                .role(user.getRole().toString())
+                .role(user.getRole().getAuthority())
                 .build();
     }
 }

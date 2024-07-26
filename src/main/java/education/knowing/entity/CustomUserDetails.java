@@ -2,6 +2,7 @@ package education.knowing.entity;
 
 import education.knowing.dto.UserDto;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
@@ -15,10 +16,11 @@ public class CustomUserDetails  implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Collection<GrantedAuthority> collection = new ArrayList<>();
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
         //유저 역할
-        collection.add((GrantedAuthority) userDto::getRole);
-        return collection;
+        authorities.add(new SimpleGrantedAuthority(userDto.getRole()));
+
+        return authorities;
     }
 
     @Override
