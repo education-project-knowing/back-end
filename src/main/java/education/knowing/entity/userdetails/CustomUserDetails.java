@@ -1,4 +1,4 @@
-package education.knowing.entity;
+package education.knowing.entity.userdetails;
 
 import education.knowing.dto.UserDto;
 import org.springframework.security.core.GrantedAuthority;
