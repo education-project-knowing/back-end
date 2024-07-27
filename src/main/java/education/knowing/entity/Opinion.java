@@ -1,5 +1,6 @@
 package education.knowing.entity;
 
+import education.knowing.entity.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,15 +11,17 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @ToString
-public class Opinion {
+public class Opinion extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long opinionId;
 
-    @JoinColumn(name = "writer")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
-
     @Column(nullable = false)
     private String opinion;
+
+    private boolean isRead;
+
+    public void updateOpinion(String opinion){
+        this.opinion = opinion;
+    }
 }
