@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
@@ -17,7 +18,12 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
             "from Question q " +
             "where q.question like concat('%', :keyword, '%')")
     Page<QuestionResponseDto> findAll(@Param("keyword") String keyword, Pageable pageable);
-
+    @Query("select new education.knowing.dto.response.QuestionResponseDto(q.qNo, q.question, q.answer, qi.importance, qi.isRecognized) " +
+            "from Question q left join q.questionInfoList qi " +
+            "where q.question like concat('%', :keyword, '%') " +
+            "and qi.user.username = :username and qi.importance = :importance and qi.isRecognized = :isRecognized")
+    Page<QuestionResponseDto> findAllWithUser(@Param("username") String username, @Param("keyword") String keyword,
+                                              @Param("isRecognized") boolean isRecognized, @Param("importance")int importance, Pageable pageable);
     //폴더 내 질문
     @Query("select new education.knowing.dto.response.QuestionResponseDto(q.qNo, q.question, q.answer) " +
             "from FolderQna fq left join fq.question q " +
@@ -30,12 +36,11 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
             "and qi.user.username = :username and qi.importance = :importance and qi.isRecognized = :isRecognized")
     Page<QuestionResponseDto> findAllByFolderWithUser(@Param("fNo")Long fNo, @Param("username") String username, @Param("keyword") String keyword,
                                                       @Param("isRecognized") boolean isRecognized, @Param("importance")int importance, Pageable pageable);
-    @Query("select new education.knowing.dto.response.QuestionResponseDto(q.qNo, q.question, q.answer, qi.importance, qi.isRecognized) " +
+
+    @Query("select new education.knowing.dto.response.QuestionResponseDto(q.qNo, q.question, q.answer) " +
             "from Question q left join q.questionInfoList qi " +
-            "where q.question like concat('%', :keyword, '%') " +
-            "and qi.user.username = :username and qi.importance = :importance and qi.isRecognized = :isRecognized")
-    Page<QuestionResponseDto> findAllWithUser(@Param("username") String username, @Param("keyword") String keyword,
-                                              @Param("isRecognized") boolean isRecognized, @Param("importance")int importance, Pageable pageable);
+            "where qi.user.username = :username and qi.isRecognized = false")
+    List<QuestionResponseDto> findAllQuizByUser(@Param("username") String username);
 
     @Query("select new education.knowing.dto.response.QuestionResponseDto(q.qNo, q.question, q.answer, qi.importance, qi.isRecognized) " +
             "from Question q left join q.questionInfoList qi " +
