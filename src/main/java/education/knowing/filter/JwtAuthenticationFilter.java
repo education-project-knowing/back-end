@@ -1,7 +1,7 @@
 package education.knowing.filter;
 
 import education.knowing.dto.UserDto;
-import education.knowing.entity.CustomUserDetails;
+import education.knowing.entity.userdetails.CustomUserDetails;
 import education.knowing.util.JwtUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
