@@ -27,4 +27,8 @@ public class Study {
 
     private int studyTimeSeconds;
     private boolean favorite;
+
+    public void study(int studyTimeSeconds){
+        this.studyTimeSeconds += studyTimeSeconds;
+    }
 }

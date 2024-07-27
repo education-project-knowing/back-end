@@ -1,9 +1,11 @@
 package education.knowing.controller;
 
 import education.knowing.dto.request.FolderRequestDto;
+import education.knowing.dto.request.StudyRequestDto;
 import education.knowing.dto.response.FolderResponseDto;
 import education.knowing.dto.response.ResponseDto;
 import education.knowing.service.FolderService;
+import education.knowing.service.StudyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,7 @@ import java.util.List;
 @RequestMapping("/api/folder")
 public class FolderController {
     private final FolderService folderService;
+    private final StudyService studyService;
     @GetMapping("/list")
     public ResponseEntity<List<FolderResponseDto>> getList(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -49,4 +52,10 @@ public class FolderController {
     }
 
 
+    @PutMapping("/study/{fNo}")
+    public ResponseEntity<ResponseDto<?>> study(@PathVariable Long fNo, @RequestBody StudyRequestDto studyRequestDto){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        return ResponseEntity.ok(studyService.study(fNo, username, studyRequestDto));
+    }
 }
