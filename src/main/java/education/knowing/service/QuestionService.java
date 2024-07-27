@@ -72,6 +72,11 @@ public class QuestionService {
         }
     }
 
+    @Transactional(readOnly = true)
+    public List<QuestionResponseDto> getQuizList(String username){
+        return questionRepository.findAllQuizByUser(username);
+    }
+
     public QuestionResponseDto createQuestion(QuestionRequestDto questionRequestDto){
         Question question = Question.builder()
                 .question(questionRequestDto.getQuestion())
@@ -79,6 +84,27 @@ public class QuestionService {
                 .build();
 
         Folder folder = folderRepository.findById(questionRequestDto.getFNo()).orElseThrow(
+                ()-> new BusinessLogicException(BusinessError.FOLDER_NOT_FOUND)
+        );
+
+        Question result = questionRepository.save(question);
+
+        FolderQna folderQna = FolderQna.builder()
+                .folder(folder)
+                .question(question)
+                .build();
+
+        folderQnaRepository.save(folderQna);
+
+        return new QuestionResponseDto(result.getQNo(), result.getQuestion(), result.getAnswer());
+    }
+    public QuestionResponseDto createQuestion(Long fNo, QuestionRequestDto questionRequestDto){
+        Question question = Question.builder()
+                .question(questionRequestDto.getQuestion())
+                .answer(questionRequestDto.getAnswer())
+                .build();
+
+        Folder folder = folderRepository.findById(fNo).orElseThrow(
                 ()-> new BusinessLogicException(BusinessError.FOLDER_NOT_FOUND)
         );
 

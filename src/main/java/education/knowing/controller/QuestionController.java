@@ -1,9 +1,11 @@
 package education.knowing.controller;
 
+import education.knowing.dto.request.QuestionInfoRequestDto;
 import education.knowing.dto.request.QuestionRequestDto;
 import education.knowing.dto.request.paging.QuestionPageRequestDto;
 import education.knowing.dto.response.QuestionResponseDto;
 import education.knowing.dto.response.paging.PageResponseDto;
+import education.knowing.service.QuestionInfoService;
 import education.knowing.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,11 +14,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/question")
 public class QuestionController {
     private final QuestionService questionService;
+    private final QuestionInfoService questionInfoService;
 
     @GetMapping("/list")
     public ResponseEntity<PageResponseDto<QuestionResponseDto>> getList(@RequestBody QuestionPageRequestDto questionPageRequestDto){
@@ -28,7 +33,7 @@ public class QuestionController {
         return ResponseEntity.ok(questionService.getQuestionList(username, questionPageRequestDto));
     }
     @GetMapping("/list/{fNo}")
-    public ResponseEntity<PageResponseDto<QuestionResponseDto>> getList(@PathVariable Long fNo, QuestionPageRequestDto questionPageRequestDto){
+    public ResponseEntity<PageResponseDto<QuestionResponseDto>> getListByFolder(@PathVariable Long fNo, QuestionPageRequestDto questionPageRequestDto){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = null;
         if(authentication != null){
@@ -46,9 +51,20 @@ public class QuestionController {
         return ResponseEntity.ok(questionService.getQuestion(qNo, username));
     }
 
+    @GetMapping("/quiz")
+    public ResponseEntity<List<QuestionResponseDto>> getQuiz(){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return ResponseEntity.ok(questionService.getQuizList(username));
+    }
+
     @PostMapping
     public ResponseEntity<QuestionResponseDto> createQuestion(@RequestBody QuestionRequestDto questionRequestDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(questionService.createQuestion(questionRequestDto));
+    }
+
+    @PostMapping("/{fNo}")
+    public ResponseEntity<QuestionResponseDto> createQuestion(@PathVariable Long fNo, @RequestBody QuestionRequestDto questionRequestDto){
+        return ResponseEntity.status(HttpStatus.CREATED).body(questionService.createQuestion(fNo, questionRequestDto));
     }
 
     @PutMapping("/{qNo}")
@@ -61,5 +77,11 @@ public class QuestionController {
     public ResponseEntity<?> deleteQuestion(@PathVariable Long qNo){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity.ok(questionService.deleteQuestion(qNo, username));
+    }
+
+    @PutMapping("/info/{qNo}")
+    public ResponseEntity<?> createOrUpdateQuestionInfo(@PathVariable Long qNo, @RequestBody QuestionInfoRequestDto questionInfoRequestDto){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return ResponseEntity.ok(questionInfoService.createOrUpdateQuestionInfo(username, qNo, questionInfoRequestDto));
     }
 }
