@@ -5,6 +5,8 @@ import education.knowing.filter.LoginFilter;
 import education.knowing.filter.LogoutFilter;
 import education.knowing.handler.CustomAccessDeniedHandler;
 import education.knowing.handler.CustomAuthenticationEntryPoint;
+import education.knowing.handler.OAuth2SuccessHandler;
+import education.knowing.service.oauth.CustomOAuth2UserService;
 import education.knowing.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -36,6 +38,8 @@ public class SecurityConfig {
     private final AuthenticationConfiguration authenticationConfiguration;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final LogoutFilter logoutFilter;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
+    private final CustomOAuth2UserService customOAuth2UserService;
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
@@ -66,6 +70,14 @@ public class SecurityConfig {
                         .requestMatchers("/login", "/api/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
+
+                .oauth2Login(oauth2 -> {
+                    oauth2.userInfoEndpoint(userInfoEndpointConfig -> {
+                                userInfoEndpointConfig.userService(customOAuth2UserService);
+                            })
+                            .successHandler(oAuth2SuccessHandler);
+                })
+
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                         .accessDeniedHandler(new CustomAccessDeniedHandler()))
