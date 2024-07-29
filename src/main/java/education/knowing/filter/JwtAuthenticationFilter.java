@@ -65,7 +65,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             response.setContentType("application/json");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setCharacterEncoding("UTF-8");
-            response.getWriter().write("{\"status\" : 401, \"message\" : \"잘못된 토큰 전달\"}");
+            response.getWriter().write("{\"status\" : 401, \"message\" : \"Access Token 아님\"}");
 
             return;
         }
