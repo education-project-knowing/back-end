@@ -27,7 +27,7 @@ public class Folder extends BaseEntity {
     @Column(nullable = false, length = 100)
     private String intro;
 
-    @OneToMany(mappedBy = "folder", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "folder", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<FolderQna> questionList = new ArrayList<>();
 
@@ -38,6 +38,6 @@ public class Folder extends BaseEntity {
     }
 
     public void clear(){
-        this.questionList = null;
+        this.questionList.clear();
     }
 }

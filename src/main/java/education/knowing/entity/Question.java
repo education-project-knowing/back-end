@@ -27,21 +27,16 @@ public class Question extends BaseEntity {
     @Column(nullable = false)
     private String answer;
 
-    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<FolderQna> folderQnaList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<QuestionInfo> questionInfoList = new ArrayList<>();
 
     public void updateQuestion(String question, String answer){
         this.question = question;
         this.answer = answer;
-    }
-
-    public void clear(){
-        this.folderQnaList = null;
-        this.questionInfoList = null;
     }
 }
