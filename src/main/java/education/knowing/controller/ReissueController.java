@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReissueController {
     private final JwtUtil jwtUtil;
 
-    @PostMapping("/reissue")
+    @PostMapping("/api/reissue")
     public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response){
         //리프레쉬 토큰 가져오기
         String refresh = null;
