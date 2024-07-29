@@ -13,11 +13,4 @@ public class FolderRequestDto {
 
     @NotBlank
     private String intro;
-
-    private boolean isPublic;
-
-    @JsonProperty("isPublic")
-    public void setIsPublic(Boolean isPublic) {
-        this.isPublic = isPublic == null || isPublic;
-    }
 }
