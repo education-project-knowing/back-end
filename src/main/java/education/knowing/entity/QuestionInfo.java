@@ -29,8 +29,8 @@ public class QuestionInfo {
 
     private boolean isRecognized;
 
-    public void updateQuestionInfo(String importance, boolean isRecognized){
-        this.importance = Importance.valueOf(importance);
+    public void updateQuestionInfo(Importance importance, boolean isRecognized){
+        this.importance = importance;
         this.isRecognized = isRecognized;
     }
 }
