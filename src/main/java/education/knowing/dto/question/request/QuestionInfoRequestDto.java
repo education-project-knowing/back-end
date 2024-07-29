@@ -6,6 +6,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class QuestionInfoRequestDto {
-    private boolean isRecognized;
+    private boolean recognized;
     private int importance;
 }
