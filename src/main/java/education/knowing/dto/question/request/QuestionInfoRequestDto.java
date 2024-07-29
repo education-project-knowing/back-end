@@ -1,5 +1,6 @@
 package education.knowing.dto.question.request;
 
+import education.knowing.constant.Importance;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -7,5 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class QuestionInfoRequestDto {
     private boolean recognized;
-    private int importance;
+    private Importance importance;
 }
