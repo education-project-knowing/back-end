@@ -1,13 +1,12 @@
 package education.knowing.service;
 
+import education.knowing.dto.ResponseDto;
 import education.knowing.dto.folder.request.FolderRequestDto;
 import education.knowing.dto.folder.response.FolderResponseDto;
-import education.knowing.dto.ResponseDto;
 import education.knowing.entity.Folder;
 import education.knowing.exception.BusinessError;
 import education.knowing.exception.BusinessLogicException;
 import education.knowing.repository.FolderRepository;
-import education.knowing.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +17,6 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class FolderService {
-    private final UserRepository userRepository;
     private final FolderRepository folderRepository;
 
     @Transactional(readOnly = true)
@@ -69,16 +67,12 @@ public class FolderService {
             throw new BusinessLogicException(BusinessError.NOT_FOLDER_CREATOR);
         }
 
-        folder.clear();
-
         folderRepository.delete(folder);
         return new ResponseDto<>(200, "폴더 삭제 완료");
     }
     public ResponseDto<?> deleteFolderByAdmin(Long fNo){
         Folder folder = folderRepository.findById(fNo)
                 .orElseThrow(()-> new BusinessLogicException(BusinessError.FOLDER_NOT_FOUND));
-
-        folder.clear();
 
         folderRepository.delete(folder);
         return new ResponseDto<>(200, "폴더 삭제 완료");
