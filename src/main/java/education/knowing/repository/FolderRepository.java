@@ -10,14 +10,14 @@ import java.util.List;
 import java.util.Optional;
 
 public interface FolderRepository extends JpaRepository<Folder, Long> {
-    @Query("select new education.knowing.dto.response.FolderResponseDto(f.fNo, f.title, f.intro, f.createdBy, count(fq), f.isPublic) " +
+    @Query("select new education.knowing.dto.folder.response.FolderResponseDto(f.fNo, f.title, f.intro, f.createdBy, count(fq), f.isPublic) " +
             "from Folder f " +
             "left join f.questionList fq " +
             "where f.isPublic = true " +
             "group by f.fNo, f.title, f.intro, f.createdBy, f.isPublic ")
     List<FolderResponseDto> findAllWithQuestionCount();
 
-    @Query("select new education.knowing.dto.response.FolderResponseDto(f.fNo, f.title, f.intro, f.createdBy, count(fq), SUM(CASE WHEN qi.user.username = :username AND qi.isRecognized = true THEN 1 ELSE 0 END), f.isPublic) " +
+    @Query("select new education.knowing.dto.folder.response.FolderResponseDto(f.fNo, f.title, f.intro, f.createdBy, count(fq), SUM(CASE WHEN qi.user.username = :username AND qi.isRecognized = true THEN 1 ELSE 0 END), f.isPublic) " +
             "from Folder f " +
             "left join f.questionList fq " +
             "left join fq.question q " +

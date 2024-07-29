@@ -12,7 +12,7 @@ public interface OpinionRepository extends JpaRepository<Opinion, Long> {
 
     Opinion findFirstByCreatedByOrderByCreatedDate(String createBy);
 
-    @Query("select new education.knowing.dto.response.OpinionResponseDto(o.opinionId, o.createdBy, o.opinion, o.createdDate) " +
+    @Query("select new education.knowing.dto.opinion.response.OpinionResponseDto(o.opinionId, o.createdBy, o.opinion, o.createdDate) " +
             "from Opinion o where o.isRead = false")
     List<OpinionResponseDto> findNotReadOpinions();
 }
