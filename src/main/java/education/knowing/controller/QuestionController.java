@@ -25,29 +25,17 @@ public class QuestionController {
 
     @GetMapping("/list")
     public ResponseEntity<PageResponseDto<QuestionResponseDto>> getList(@RequestBody QuestionPageRequestDto questionPageRequestDto){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = null;
-        if(authentication != null){
-            username = authentication.getName();
-        }
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity.ok(questionService.getQuestionList(username, questionPageRequestDto));
     }
     @GetMapping("/list/{fNo}")
     public ResponseEntity<PageResponseDto<QuestionResponseDto>> getListByFolder(@PathVariable Long fNo, QuestionPageRequestDto questionPageRequestDto){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = null;
-        if(authentication != null){
-            username = authentication.getName();
-        }
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity.ok(questionService.getQuestionListByFolder(fNo,username, questionPageRequestDto));
     }
     @GetMapping("/{qNo}")
     public ResponseEntity<QuestionResponseDto> getQuestion(@PathVariable Long qNo){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = null;
-        if(authentication != null){
-            username = authentication.getName();
-        }
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity.ok(questionService.getQuestion(qNo, username));
     }
 

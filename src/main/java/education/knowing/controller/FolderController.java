@@ -24,11 +24,8 @@ public class FolderController {
     private final StudyService studyService;
     @GetMapping("/list")
     public ResponseEntity<List<FolderResponseDto>> getList(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = null;
-        if(authentication != null){
-            username = authentication.getName();
-        }
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
         return ResponseEntity.ok(folderService.getFolderList(username));
     }
     @PostMapping
