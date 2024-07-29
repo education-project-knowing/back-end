@@ -13,8 +13,8 @@ public class QuestionResponseDto {
     private Long qNo;
     private String question;
     private String answer;
-    private int importance;
-    private boolean isRecognized;
+    private Integer importance;
+    private Boolean isRecognized;
 
     public QuestionResponseDto(Long qNo, String question, String answer) {
         this.qNo = qNo;
