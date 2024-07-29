@@ -19,23 +19,33 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
             "where q.question like concat('%', :keyword, '%')")
     Page<QuestionResponseDto> findAll(@Param("keyword") String keyword, Pageable pageable);
     @Query("select new education.knowing.dto.question.response.QuestionResponseDto(q.qNo, q.question, q.answer, qi.importance, qi.isRecognized) " +
-            "from Question q left join q.questionInfoList qi " +
+            "from Question q " +
+            "left join q.questionInfoList qi " +
+            "left join qi.user u " +
             "where q.question like concat('%', :keyword, '%') " +
-            "and qi.user.username = :username and qi.importance = :importance and qi.isRecognized = :isRecognized")
+            "and (u is null or u.username = :username) " +
+            "and (:importance is null or qi.importance in :importance)" +
+            " and (:recognized is null or qi.isRecognized = :recognized)")
     Page<QuestionResponseDto> findAllWithUser(@Param("username") String username, @Param("keyword") String keyword,
-                                              @Param("isRecognized") boolean isRecognized, @Param("importance")int importance, Pageable pageable);
+                                              @Param("recognized") Boolean recognized, @Param("importance")List<Integer> importance, Pageable pageable);
     //폴더 내 질문
     @Query("select new education.knowing.dto.question.response.QuestionResponseDto(q.qNo, q.question, q.answer) " +
-            "from FolderQna fq left join fq.question q " +
+            "from Question q " +
+            "left join q.folderQnaList fq " +
             "where fq.folder.fNo = :fNo and q.question like concat('%', :keyword, '%')")
     Page<QuestionResponseDto> findAllByFolder(@Param("fNo") Long fNo, @Param("keyword") String keyword, Pageable pageable);
 
     @Query("select new education.knowing.dto.question.response.QuestionResponseDto(q.qNo, q.question, q.answer, qi.importance, qi.isRecognized) " +
-            "from FolderQna fq left join fq.question q left join q.questionInfoList qi " +
+            "from Question q " +
+            "left join q.folderQnaList fq " +
+            "left join q.questionInfoList qi " +
+            "left join qi.user u " +
             "where fq.folder.fNo = :fNo and q.question like concat('%', :keyword, '%') " +
-            "and qi.user.username = :username and qi.importance = :importance and qi.isRecognized = :isRecognized")
+            "and (u is null or u.username = :username) " +
+            "and (:importance is null or qi.importance in :importance) " +
+            "and (:recognized is null or qi.isRecognized = :recognized)")
     Page<QuestionResponseDto> findAllByFolderWithUser(@Param("fNo")Long fNo, @Param("username") String username, @Param("keyword") String keyword,
-                                                      @Param("isRecognized") boolean isRecognized, @Param("importance")int importance, Pageable pageable);
+                                                      @Param("recognized") Boolean recognized, @Param("importance")List<Integer> importance, Pageable pageable);
 
     @Query("select new education.knowing.dto.question.response.QuestionResponseDto(q.qNo, q.question, q.answer) " +
             "from Question q left join q.questionInfoList qi " +
@@ -43,7 +53,9 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     List<QuestionResponseDto> findAllQuizByUser(@Param("username") String username);
 
     @Query("select new education.knowing.dto.question.response.QuestionResponseDto(q.qNo, q.question, q.answer, qi.importance, qi.isRecognized) " +
-            "from Question q left join q.questionInfoList qi " +
-            "where q.qNo = :qNo and qi.user.username = :username")
+            "from Question q " +
+            "left join q.questionInfoList qi " +
+            "left join qi.user u " +
+            "where q.qNo = :qNo and (qi is null or u.username = :username)")
     Optional<QuestionResponseDto> findByIdWithUser(@Param("qNo")Long qNo, @Param("username")String username);
 }
