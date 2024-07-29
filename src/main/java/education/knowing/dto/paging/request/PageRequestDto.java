@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class PageRequestDto {
-    private int page;
-    private int size;
+    private int page = 1;
+    private int size = 10;
     private String keyword;
 }
