@@ -37,7 +37,7 @@ public class QuestionService {
                 pageRequestDto.getSize(), Sort.by(pageRequestDto.getOrderBy()));
 
         Page<QuestionResponseDto> result;
-        if (username == null) {
+        if (username.equals("anonymousUser")) {
             result = questionRepository.findAll(pageRequestDto.getKeyword(), pageable);
         } else {
             result = questionRepository.findAllWithUser(username, pageRequestDto.getKeyword(), pageRequestDto.isRecognized(), pageRequestDto.getImportance(), pageable);
@@ -51,7 +51,7 @@ public class QuestionService {
                 pageRequestDto.getSize(), Sort.by(pageRequestDto.getOrderBy()));
 
         Page<QuestionResponseDto> result;
-        if (username == null) {
+        if (username.equals("anonymousUser")) {
             result = questionRepository.findAllByFolder(fNo, pageRequestDto.getKeyword(), pageable);
         } else {
             result = questionRepository.findAllByFolderWithUser(fNo, username, pageRequestDto.getKeyword(), pageRequestDto.isRecognized(), pageRequestDto.getImportance(), pageable);
@@ -62,7 +62,7 @@ public class QuestionService {
 
     @Transactional(readOnly = true)
     public QuestionResponseDto getQuestion(Long qNo, String username) {
-        if (username == null) {
+        if (username.equals("anonymousUser")) {
             Question question = questionRepository.findById(qNo)
                     .orElseThrow(() -> new BusinessLogicException(BusinessError.QUESTION_NOT_FOUND));
 

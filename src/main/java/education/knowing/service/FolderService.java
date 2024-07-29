@@ -23,7 +23,7 @@ public class FolderService {
 
     @Transactional(readOnly = true)
     public List<FolderResponseDto> getFolderList(String username){
-        if(username == null){
+        if(username.equals("anonymousUser")){
             return folderRepository.findAllWithQuestionCount();
         } else{
             return folderRepository.findAllWithQuestionCountAndRecognizeCount(username);
@@ -34,7 +34,7 @@ public class FolderService {
         Folder folder = Folder.builder()
                 .title(folderRequestDto.getTitle())
                 .intro(folderRequestDto.getIntro())
-                .isPublic(folderRequestDto.isPublic())
+                .isPublic(true)
                 .build();
 
         Folder result = folderRepository.save(folder);
@@ -46,7 +46,7 @@ public class FolderService {
     }
 
     public ResponseDto<?> updateFolder(Long fNo, String username, FolderRequestDto folderRequestDto){
-        Folder folder = folderRepository.findByIdWithUser(fNo)
+        Folder folder = folderRepository.findById(fNo)
                 .orElseThrow(()-> new BusinessLogicException(BusinessError.FOLDER_NOT_FOUND));
 
         if(!folder.getCreatedBy().equals(username)){
@@ -54,7 +54,7 @@ public class FolderService {
         }
 
         folder.updateInfo(folderRequestDto.getTitle(),
-                folderRequestDto.getIntro(), folderRequestDto.isPublic());
+                folderRequestDto.getIntro(), true);
 
         folderRepository.save(folder);
 
@@ -62,7 +62,7 @@ public class FolderService {
     }
 
     public ResponseDto<?> deleteFolder(Long fNo, String username){
-        Folder folder = folderRepository.findByIdWithUser(fNo)
+        Folder folder = folderRepository.findById(fNo)
                 .orElseThrow(()-> new BusinessLogicException(BusinessError.FOLDER_NOT_FOUND));
 
         if(!folder.getCreatedBy().equals(username)){
@@ -75,7 +75,7 @@ public class FolderService {
         return new ResponseDto<>(200, "폴더 삭제 완료");
     }
     public ResponseDto<?> deleteFolderByAdmin(Long fNo){
-        Folder folder = folderRepository.findByIdWithUser(fNo)
+        Folder folder = folderRepository.findById(fNo)
                 .orElseThrow(()-> new BusinessLogicException(BusinessError.FOLDER_NOT_FOUND));
 
         folder.clear();
