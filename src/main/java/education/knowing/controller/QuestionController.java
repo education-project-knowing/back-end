@@ -29,7 +29,7 @@ public class QuestionController {
         return ResponseEntity.ok(questionService.getQuestionList(username, questionPageRequestDto));
     }
     @GetMapping("/list/{fNo}")
-    public ResponseEntity<PageResponseDto<QuestionResponseDto>> getListByFolder(@PathVariable Long fNo, QuestionPageRequestDto questionPageRequestDto){
+    public ResponseEntity<PageResponseDto<QuestionResponseDto>> getListByFolder(@PathVariable Long fNo, @RequestBody QuestionPageRequestDto questionPageRequestDto){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity.ok(questionService.getQuestionListByFolder(fNo,username, questionPageRequestDto));
     }
@@ -47,6 +47,7 @@ public class QuestionController {
 
     @PostMapping
     public ResponseEntity<QuestionResponseDto> createQuestion(@RequestBody QuestionRequestDto questionRequestDto){
+        System.out.println(questionRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(questionService.createQuestion(questionRequestDto));
     }
 
