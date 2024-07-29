@@ -26,6 +26,7 @@ public class UserDto {
         return UserDto.builder()
                 .username(user.getUsername())
                 .email(user.getEmail())
+                .password(user.getPassword())
                 .nickname(user.getNickname())
                 .role(user.getRole().getAuthority())
                 .build();
