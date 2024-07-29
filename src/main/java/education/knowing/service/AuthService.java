@@ -95,6 +95,9 @@ public class AuthService {
                 certificationDto.getCertificationNumber())){
             throw new BusinessLogicException(BusinessError.CERTIFICATION_FAIL);
         }
+
+        certificationRepository.deleteById(certificationDto.getEmail());
+
         return new ResponseDto<>(200, "이메일 인증 성공");
     }
 
