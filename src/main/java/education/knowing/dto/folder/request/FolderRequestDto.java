@@ -1,4 +1,4 @@
-package education.knowing.dto.request;
+package education.knowing.dto.folder.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;

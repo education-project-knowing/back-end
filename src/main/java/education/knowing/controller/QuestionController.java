@@ -1,10 +1,10 @@
 package education.knowing.controller;
 
-import education.knowing.dto.request.QuestionInfoRequestDto;
-import education.knowing.dto.request.QuestionRequestDto;
-import education.knowing.dto.request.paging.QuestionPageRequestDto;
-import education.knowing.dto.response.QuestionResponseDto;
-import education.knowing.dto.response.paging.PageResponseDto;
+import education.knowing.dto.question.request.QuestionInfoRequestDto;
+import education.knowing.dto.question.request.QuestionRequestDto;
+import education.knowing.dto.paging.request.QuestionPageRequestDto;
+import education.knowing.dto.question.response.QuestionResponseDto;
+import education.knowing.dto.paging.response.PageResponseDto;
 import education.knowing.service.QuestionInfoService;
 import education.knowing.service.QuestionService;
 import lombok.RequiredArgsConstructor;

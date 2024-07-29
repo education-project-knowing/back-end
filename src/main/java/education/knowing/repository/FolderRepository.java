@@ -1,6 +1,6 @@
 package education.knowing.repository;
 
-import education.knowing.dto.response.FolderResponseDto;
+import education.knowing.dto.folder.response.FolderResponseDto;
 import education.knowing.entity.Folder;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

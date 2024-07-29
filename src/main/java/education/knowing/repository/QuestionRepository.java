@@ -1,6 +1,6 @@
 package education.knowing.repository;
 
-import education.knowing.dto.response.QuestionResponseDto;
+import education.knowing.dto.question.response.QuestionResponseDto;
 import education.knowing.entity.Question;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

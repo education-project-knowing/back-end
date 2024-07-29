@@ -1,6 +1,6 @@
 package education.knowing.advice;
 
-import education.knowing.dto.response.ResponseDto;
+import education.knowing.dto.ResponseDto;
 import education.knowing.exception.BusinessError;
 import education.knowing.exception.BusinessLogicException;
 import org.springframework.http.HttpStatus;

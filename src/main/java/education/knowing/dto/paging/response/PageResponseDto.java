@@ -1,6 +1,6 @@
-package education.knowing.dto.response.paging;
+package education.knowing.dto.paging.response;
 
-import education.knowing.dto.request.paging.PageRequestDto;
+import education.knowing.dto.paging.request.PageRequestDto;
 import lombok.*;
 
 import java.util.List;

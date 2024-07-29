@@ -1,7 +1,7 @@
 package education.knowing.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import education.knowing.dto.request.LoginRequestDto;
+import education.knowing.dto.auth.request.LoginRequestDto;
 import education.knowing.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

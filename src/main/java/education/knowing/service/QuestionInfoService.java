@@ -1,7 +1,7 @@
 package education.knowing.service;
 
-import education.knowing.dto.request.QuestionInfoRequestDto;
-import education.knowing.dto.response.ResponseDto;
+import education.knowing.dto.question.request.QuestionInfoRequestDto;
+import education.knowing.dto.ResponseDto;
 import education.knowing.entity.Question;
 import education.knowing.entity.QuestionInfo;
 import education.knowing.entity.User;

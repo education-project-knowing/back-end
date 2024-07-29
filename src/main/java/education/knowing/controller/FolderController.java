@@ -1,9 +1,9 @@
 package education.knowing.controller;
 
-import education.knowing.dto.request.FolderRequestDto;
-import education.knowing.dto.request.StudyRequestDto;
-import education.knowing.dto.response.FolderResponseDto;
-import education.knowing.dto.response.ResponseDto;
+import education.knowing.dto.folder.request.FolderRequestDto;
+import education.knowing.dto.folder.request.StudyRequestDto;
+import education.knowing.dto.folder.response.FolderResponseDto;
+import education.knowing.dto.ResponseDto;
 import education.knowing.service.FolderService;
 import education.knowing.service.StudyService;
 import jakarta.validation.Valid;

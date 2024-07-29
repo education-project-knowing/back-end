@@ -1,4 +1,4 @@
-package education.knowing.dto.request.paging;
+package education.knowing.dto.paging.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

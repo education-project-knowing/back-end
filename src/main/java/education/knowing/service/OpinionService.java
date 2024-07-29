@@ -1,8 +1,8 @@
 package education.knowing.service;
 
-import education.knowing.dto.request.OpinionRequestDto;
-import education.knowing.dto.response.OpinionResponseDto;
-import education.knowing.dto.response.ResponseDto;
+import education.knowing.dto.opinion.request.OpinionRequestDto;
+import education.knowing.dto.opinion.response.OpinionResponseDto;
+import education.knowing.dto.ResponseDto;
 import education.knowing.entity.Opinion;
 import education.knowing.exception.BusinessError;
 import education.knowing.exception.BusinessLogicException;

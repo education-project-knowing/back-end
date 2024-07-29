@@ -1,8 +1,8 @@
 package education.knowing.controller;
 
-import education.knowing.dto.request.OpinionRequestDto;
-import education.knowing.dto.response.OpinionResponseDto;
-import education.knowing.dto.response.ResponseDto;
+import education.knowing.dto.opinion.request.OpinionRequestDto;
+import education.knowing.dto.opinion.response.OpinionResponseDto;
+import education.knowing.dto.ResponseDto;
 import education.knowing.service.OpinionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

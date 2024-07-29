@@ -1,8 +1,8 @@
 package education.knowing.service;
 
-import education.knowing.dto.request.FolderRequestDto;
-import education.knowing.dto.response.FolderResponseDto;
-import education.knowing.dto.response.ResponseDto;
+import education.knowing.dto.folder.request.FolderRequestDto;
+import education.knowing.dto.folder.response.FolderResponseDto;
+import education.knowing.dto.ResponseDto;
 import education.knowing.entity.Folder;
 import education.knowing.exception.BusinessError;
 import education.knowing.exception.BusinessLogicException;

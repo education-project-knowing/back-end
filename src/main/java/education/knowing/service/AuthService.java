@@ -1,10 +1,11 @@
 package education.knowing.service;
 
 import education.knowing.constant.Role;
-import education.knowing.dto.CertificationDto;
-import education.knowing.dto.request.SignUpRequestDto;
-import education.knowing.dto.response.ResponseDto;
-import education.knowing.dto.response.SignUpResponseDto;
+import education.knowing.dto.auth.request.CertificationRequestDto;
+import education.knowing.dto.auth.request.SignUpRequestDto;
+import education.knowing.dto.ResponseDto;
+import education.knowing.dto.auth.response.CertificationResponseDto;
+import education.knowing.dto.auth.response.SignUpResponseDto;
 import education.knowing.entity.EmailCertification;
 import education.knowing.entity.User;
 import education.knowing.exception.BusinessError;
@@ -68,7 +69,7 @@ public class AuthService {
         return userRepository.existsByNickname(nickname);
     }
 
-    public CertificationDto sendCertificationEmail(CertificationDto certificationDto){
+    public CertificationResponseDto sendCertificationEmail(CertificationRequestDto certificationDto){
         String email = certificationDto.getEmail();
         String certificationNumber = createCertificationNumber();
 
@@ -85,11 +86,10 @@ public class AuthService {
 
         certificationRepository.save(emailCertification);
 
-        certificationDto.setCertificationNumber(certificationNumber);
-        return certificationDto;
+        return new CertificationResponseDto(certificationNumber);
     }
 
-    public ResponseDto<?> certificationEmail(CertificationDto certificationDto){
+    public ResponseDto<?> certificationEmail(CertificationRequestDto certificationDto){
         if(!certificationRepository.existsByEmailAndCertificationNumber(
                 certificationDto.getEmail(),
                 certificationDto.getCertificationNumber())){

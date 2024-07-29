@@ -1,6 +1,6 @@
 package education.knowing.repository;
 
-import education.knowing.dto.response.OpinionResponseDto;
+import education.knowing.dto.opinion.response.OpinionResponseDto;
 import education.knowing.entity.Opinion;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

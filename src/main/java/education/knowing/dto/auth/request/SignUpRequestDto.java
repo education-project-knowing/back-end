@@ -1,4 +1,4 @@
-package education.knowing.dto.request;
+package education.knowing.dto.auth.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -22,6 +22,6 @@ public class SignUpRequestDto {
     private String nickname;
 
     @NotBlank(message = "이메일을 입력하세요.")
-    @Email
+    @Email(message = "이메일 형식이 아닙니다.")
     private String email;
 }

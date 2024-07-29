@@ -1,4 +1,4 @@
-package education.knowing.dto.request;
+package education.knowing.dto.opinion.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

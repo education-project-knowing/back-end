@@ -1,4 +1,4 @@
-package education.knowing.dto.response;
+package education.knowing.dto.opinion.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import education.knowing.entity.Opinion;
