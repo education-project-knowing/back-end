@@ -1,5 +1,6 @@
 package education.knowing.repository;
 
+import education.knowing.constant.Importance;
 import education.knowing.dto.question.response.QuestionResponseDto;
 import education.knowing.entity.Question;
 import org.springframework.data.domain.Page;
@@ -27,7 +28,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
             "and (:importance is null or qi.importance in :importance)" +
             " and (:recognized is null or qi.isRecognized = :recognized)")
     Page<QuestionResponseDto> findAllWithUser(@Param("username") String username, @Param("keyword") String keyword,
-                                              @Param("recognized") Boolean recognized, @Param("importance")List<Integer> importance, Pageable pageable);
+                                              @Param("recognized") Boolean recognized, @Param("importance")List<Importance> importance, Pageable pageable);
     //폴더 내 질문
     @Query("select new education.knowing.dto.question.response.QuestionResponseDto(q.qNo, q.question, q.answer) " +
             "from Question q " +
@@ -45,7 +46,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
             "and (:importance is null or qi.importance in :importance) " +
             "and (:recognized is null or qi.isRecognized = :recognized)")
     Page<QuestionResponseDto> findAllByFolderWithUser(@Param("fNo")Long fNo, @Param("username") String username, @Param("keyword") String keyword,
-                                                      @Param("recognized") Boolean recognized, @Param("importance")List<Integer> importance, Pageable pageable);
+                                                      @Param("recognized") Boolean recognized, @Param("importance")List<Importance> importance, Pageable pageable);
 
     @Query("select new education.knowing.dto.question.response.QuestionResponseDto(q.qNo, q.question, q.answer) " +
             "from Question q left join q.questionInfoList qi " +

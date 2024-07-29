@@ -1,5 +1,6 @@
 package education.knowing.service;
 
+import education.knowing.constant.Importance;
 import education.knowing.dto.question.request.QuestionInfoRequestDto;
 import education.knowing.dto.ResponseDto;
 import education.knowing.entity.Question;
@@ -27,7 +28,7 @@ public class QuestionInfoService {
     public ResponseDto<?> createOrUpdateQuestionInfo(String username, Long qNo, QuestionInfoRequestDto questionInfoRequestDto){
         Optional<QuestionInfo> optionalQuestionInfo = questionInfoRepository.findByUserUsernameAndQuestionQNo(username, qNo);
 
-        int importance = questionInfoRequestDto.getImportance();
+        Importance importance = questionInfoRequestDto.getImportance();
         boolean isRecognized = questionInfoRequestDto.isRecognized();
 
         QuestionInfo questionInfo = null;

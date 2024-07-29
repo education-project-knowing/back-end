@@ -1,10 +1,10 @@
 package education.knowing.service;
 
-import education.knowing.dto.question.request.QuestionRequestDto;
-import education.knowing.dto.paging.request.QuestionPageRequestDto;
-import education.knowing.dto.question.response.QuestionResponseDto;
 import education.knowing.dto.ResponseDto;
+import education.knowing.dto.paging.request.QuestionPageRequestDto;
 import education.knowing.dto.paging.response.PageResponseDto;
+import education.knowing.dto.question.request.QuestionRequestDto;
+import education.knowing.dto.question.response.QuestionResponseDto;
 import education.knowing.entity.Folder;
 import education.knowing.entity.FolderQna;
 import education.knowing.entity.Question;
@@ -40,7 +40,8 @@ public class QuestionService {
         if (username.equals("anonymousUser")) {
             result = questionRepository.findAll(pageRequestDto.getKeyword(), pageable);
         } else {
-            result = questionRepository.findAllWithUser(username, pageRequestDto.getKeyword(), pageRequestDto.getRecognized(), pageRequestDto.getImportance(), pageable);
+            result = questionRepository.findAllWithUser(username, pageRequestDto.getKeyword(), pageRequestDto.getRecognized(),
+                    pageRequestDto.getImportance(), pageable);
         }
 
         return new PageResponseDto<>(result.getContent(), pageRequestDto, result.getTotalElements());
@@ -54,7 +55,8 @@ public class QuestionService {
         if (username.equals("anonymousUser")) {
             result = questionRepository.findAllByFolder(fNo, pageRequestDto.getKeyword(), pageable);
         } else {
-            result = questionRepository.findAllByFolderWithUser(fNo, username, pageRequestDto.getKeyword(), pageRequestDto.getRecognized(), pageRequestDto.getImportance(), pageable);
+            result = questionRepository.findAllByFolderWithUser(fNo, username, pageRequestDto.getKeyword(), pageRequestDto.getRecognized(),
+                    pageRequestDto.getImportance(), pageable);
         }
 
         return new PageResponseDto<>(result.getContent(), pageRequestDto, result.getTotalElements());
