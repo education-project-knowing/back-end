@@ -34,13 +34,13 @@ public class QuestionService {
     @Transactional(readOnly = true)
     public PageResponseDto<QuestionResponseDto> getQuestionList(String username, QuestionPageRequestDto pageRequestDto) {
         Pageable pageable = PageRequest.of(pageRequestDto.getPage() - 1,
-                pageRequestDto.getSize(), Sort.by(pageRequestDto.getOrderBy()));
+                pageRequestDto.getSize(), Sort.by(pageRequestDto.getOrderBy()).descending());
 
         Page<QuestionResponseDto> result;
         if (username.equals("anonymousUser")) {
             result = questionRepository.findAll(pageRequestDto.getKeyword(), pageable);
         } else {
-            result = questionRepository.findAllWithUser(username, pageRequestDto.getKeyword(), pageRequestDto.isRecognized(), pageRequestDto.getImportance(), pageable);
+            result = questionRepository.findAllWithUser(username, pageRequestDto.getKeyword(), pageRequestDto.getRecognized(), pageRequestDto.getImportance(), pageable);
         }
 
         return new PageResponseDto<>(result.getContent(), pageRequestDto, result.getTotalElements());
@@ -48,13 +48,13 @@ public class QuestionService {
     @Transactional(readOnly = true)
     public PageResponseDto<QuestionResponseDto> getQuestionListByFolder(Long fNo, String username, QuestionPageRequestDto pageRequestDto) {
         Pageable pageable = PageRequest.of(pageRequestDto.getPage() - 1,
-                pageRequestDto.getSize(), Sort.by(pageRequestDto.getOrderBy()));
+                pageRequestDto.getSize(), Sort.by(pageRequestDto.getOrderBy()).descending());
 
         Page<QuestionResponseDto> result;
         if (username.equals("anonymousUser")) {
             result = questionRepository.findAllByFolder(fNo, pageRequestDto.getKeyword(), pageable);
         } else {
-            result = questionRepository.findAllByFolderWithUser(fNo, username, pageRequestDto.getKeyword(), pageRequestDto.isRecognized(), pageRequestDto.getImportance(), pageable);
+            result = questionRepository.findAllByFolderWithUser(fNo, username, pageRequestDto.getKeyword(), pageRequestDto.getRecognized(), pageRequestDto.getImportance(), pageable);
         }
 
         return new PageResponseDto<>(result.getContent(), pageRequestDto, result.getTotalElements());
@@ -144,8 +144,6 @@ public class QuestionService {
             throw new BusinessLogicException(BusinessError.NOT_QUESTION_CREATOR);
         }
 
-        question.clear();
-
         questionRepository.delete(question);
 
         return new ResponseDto<>(200, "문답 삭제 완료");
@@ -155,8 +153,6 @@ public class QuestionService {
         Question question = questionRepository.findById(qNo).orElseThrow(
                 ()-> new BusinessLogicException(BusinessError.QUESTION_NOT_FOUND)
         );
-
-        question.clear();
 
         questionRepository.delete(question);
 
