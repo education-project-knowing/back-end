@@ -1,5 +1,6 @@
 package education.knowing.entity;
 
+import education.knowing.constant.Importance;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,12 +24,13 @@ public class QuestionInfo {
     @ManyToOne(fetch = FetchType.LAZY)
     private Question question;
 
-    private int importance;
+    @Enumerated(EnumType.STRING)
+    private Importance importance;
 
     private boolean isRecognized;
 
-    public void updateQuestionInfo(int importance, boolean isRecognized){
-        this.importance = importance;
+    public void updateQuestionInfo(String importance, boolean isRecognized){
+        this.importance = Importance.valueOf(importance);
         this.isRecognized = isRecognized;
     }
 }
