@@ -35,7 +35,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String accessToken = request.getHeader("Authorization").replace("Bearer ", "");
+        String accessToken = request.getHeader("Authorization");
 
         if (accessToken == null) {
             filterChain.doFilter(request, response);
@@ -43,6 +43,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
+        accessToken = accessToken.replace("Bearer ", "");
         //토큰 만료 여부 확인
         try {
             jwtUtil.isExpired(accessToken);
