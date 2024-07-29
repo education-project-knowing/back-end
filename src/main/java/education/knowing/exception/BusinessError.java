@@ -9,6 +9,7 @@ public enum BusinessError {
     //400 (잘못된 요청)
     CERTIFICATION_FAIL(400, "이메일 인증 실패"),
     OPINION_SUBMIT_LIMITED_TO_10MINUTES(400, "10분 이내 사용자 의견 재작성 불가"),
+    IMPORTANCE_SETTING_ERROR(400, "문답 중요도는 HIGH, MEDIUM, LOW 만 입력 가능합니다."),
 
     //403 (권한 부족)
     NOT_FOLDER_CREATOR(403, "해당 폴더의 작성자가 아님"),

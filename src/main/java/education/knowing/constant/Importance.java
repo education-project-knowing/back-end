@@ -14,16 +14,4 @@ public enum Importance {
     LOW,
     MEDIUM,
     HIGH;
-
-    public static List<Importance> StringToImportance(List<String> stringList){
-        List<Importance> importanceList = new ArrayList<>();
-        try {
-            for (String s : stringList) {
-                importanceList.add(Importance.valueOf(s));
-            }
-        } catch (IllegalArgumentException e){
-            throw new BusinessLogicException(BusinessError.IMPORTANCE_SETTING_ERROR);
-        }
-        return importanceList;
-    }
 }
