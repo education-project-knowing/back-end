@@ -30,6 +30,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    private boolean isWithdrawn;
+
     public void changeNickname(String nickname){
         this.nickname = nickname;
     }
