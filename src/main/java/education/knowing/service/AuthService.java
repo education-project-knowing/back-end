@@ -70,7 +70,7 @@ public class AuthService {
         return userRepository.existsByNickname(nickname);
     }
 
-    public ResponseDto<?> sendCertificationEmail(CertificationRequestDto certificationDto){
+    public void sendCertificationEmail(CertificationRequestDto certificationDto){
         //이메일이 존재하지 않으면
         if(!emailCheck(certificationDto.getEmail())){
             throw new BusinessLogicException(BusinessError.EMAIL_NOT_FOUND);
@@ -91,18 +91,16 @@ public class AuthService {
         }
 
         certificationRepository.save(emailCertification);
-
-        return new ResponseDto<>(200, "인증 메일 전송");
     }
 
-    public ResponseDto<?> sendCertificationEmailForPassword(FindPasswordRequestDto findPasswordRequestDto) {
+    public void sendCertificationEmailForPassword(FindPasswordRequestDto findPasswordRequestDto) {
         if(userRepository.existsByUsernameAndEmail(findPasswordRequestDto.getId(), findPasswordRequestDto.getEmail())){
             throw new BusinessLogicException(BusinessError.WRONG_ID_OR_EMAIL);
         }
-        return sendCertificationEmail(findPasswordRequestDto);
+        sendCertificationEmail(findPasswordRequestDto);
     }
 
-    public ResponseDto<?> certificationEmail(CertificationRequestDto certificationDto){
+    public void certificationEmail(CertificationRequestDto certificationDto){
         if(!certificationRepository.existsByEmailAndCertificationNumber(
                 certificationDto.getEmail(),
                 certificationDto.getCertificationNumber())){
@@ -110,8 +108,6 @@ public class AuthService {
         }
 
         certificationRepository.deleteById(certificationDto.getEmail());
-
-        return new ResponseDto<>(200, "이메일 인증 성공");
     }
     public CertificationResponseDto certificationEmailForId(CertificationRequestDto certificationDto) {
         if(!certificationRepository.existsByEmailAndCertificationNumber(

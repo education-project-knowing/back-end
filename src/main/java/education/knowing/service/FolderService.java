@@ -43,7 +43,7 @@ public class FolderService {
         return folderResponseDto;
     }
 
-    public ResponseDto<?> updateFolder(Long fNo, String username, FolderRequestDto folderRequestDto){
+    public void updateFolder(Long fNo, String username, FolderRequestDto folderRequestDto){
         Folder folder = folderRepository.findById(fNo)
                 .orElseThrow(()-> new BusinessLogicException(BusinessError.FOLDER_NOT_FOUND));
 
@@ -55,11 +55,9 @@ public class FolderService {
                 folderRequestDto.getIntro(), true);
 
         folderRepository.save(folder);
-
-        return new ResponseDto<>(200, "폴더 수정 완료");
     }
 
-    public ResponseDto<?> deleteFolder(Long fNo, String username){
+    public void deleteFolder(Long fNo, String username){
         Folder folder = folderRepository.findById(fNo)
                 .orElseThrow(()-> new BusinessLogicException(BusinessError.FOLDER_NOT_FOUND));
 
@@ -68,13 +66,11 @@ public class FolderService {
         }
 
         folderRepository.delete(folder);
-        return new ResponseDto<>(200, "폴더 삭제 완료");
     }
-    public ResponseDto<?> deleteFolderByAdmin(Long fNo){
+    public void deleteFolderByAdmin(Long fNo){
         Folder folder = folderRepository.findById(fNo)
                 .orElseThrow(()-> new BusinessLogicException(BusinessError.FOLDER_NOT_FOUND));
 
         folderRepository.delete(folder);
-        return new ResponseDto<>(200, "폴더 삭제 완료");
     }
 }

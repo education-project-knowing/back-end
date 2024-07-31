@@ -49,7 +49,6 @@ public class QuestionController {
 
     @PostMapping
     public ResponseEntity<QuestionResponseDto> createQuestion(@RequestBody QuestionRequestDto questionRequestDto){
-        System.out.println(questionRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(questionService.createQuestion(questionRequestDto));
     }
 
@@ -59,20 +58,22 @@ public class QuestionController {
     }
 
     @PutMapping("/{qNo}")
-    public ResponseEntity<?> updateQuestion(@PathVariable Long qNo, @RequestBody QuestionRequestDto questionRequestDto){
+    @ResponseStatus(HttpStatus.OK)
+    public void updateQuestion(@PathVariable Long qNo, @RequestBody QuestionRequestDto questionRequestDto){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return ResponseEntity.ok(questionService.updateQuestion(qNo, username, questionRequestDto));
+        questionService.updateQuestion(qNo, username, questionRequestDto);
     }
 
     @DeleteMapping("/{qNo}")
-    public ResponseEntity<?> deleteQuestion(@PathVariable Long qNo){
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteQuestion(@PathVariable Long qNo){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return ResponseEntity.ok(questionService.deleteQuestion(qNo, username));
+        questionService.deleteQuestion(qNo, username);
     }
 
     @PutMapping("/info/{qNo}")
-    public ResponseEntity<?> createOrUpdateQuestionInfo(@PathVariable Long qNo, @RequestBody QuestionInfoRequestDto questionInfoRequestDto){
+    public void createOrUpdateQuestionInfo(@PathVariable Long qNo, @RequestBody QuestionInfoRequestDto questionInfoRequestDto){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return ResponseEntity.ok(questionInfoService.createOrUpdateQuestionInfo(username, qNo, questionInfoRequestDto));
+        questionInfoService.createOrUpdateQuestionInfo(username, qNo, questionInfoRequestDto);
     }
 }

@@ -34,25 +34,26 @@ public class FolderController {
     }
 
     @PutMapping("/{fNo}")
-    public ResponseEntity<ResponseDto<?>> update(@PathVariable Long fNo,
-                                                    @RequestBody @Valid FolderRequestDto folderRequestDto){
+    @ResponseStatus(HttpStatus.OK)
+    public void update(@PathVariable Long fNo, @RequestBody @Valid FolderRequestDto folderRequestDto){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        return ResponseEntity.ok(folderService.updateFolder(fNo, username, folderRequestDto));
+        folderService.updateFolder(fNo, username, folderRequestDto);
     }
 
     @DeleteMapping("/{fNo}")
-    public ResponseEntity<ResponseDto<?>> delete(@PathVariable Long fNo){
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long fNo){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        return ResponseEntity.ok(folderService.deleteFolder(fNo, username));
+        folderService.deleteFolder(fNo, username);
     }
 
 
     @PutMapping("/study/{fNo}")
-    public ResponseEntity<ResponseDto<?>> study(@PathVariable Long fNo, @RequestBody StudyRequestDto studyRequestDto){
+    @ResponseStatus(HttpStatus.OK)
+    public void study(@PathVariable Long fNo, @RequestBody StudyRequestDto studyRequestDto){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        return ResponseEntity.ok(studyService.study(fNo, username, studyRequestDto));
+        studyService.study(fNo, username, studyRequestDto);
     }
 }

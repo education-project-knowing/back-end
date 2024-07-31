@@ -37,24 +37,28 @@ public class AuthController {
     }
 
     @PostMapping("/email/send")
-    public ResponseEntity<ResponseDto<?>> sendEmail(@RequestBody @Valid CertificationRequestDto certificationDto) {
+    @ResponseStatus(HttpStatus.OK)
+    public void sendEmail(@RequestBody @Valid CertificationRequestDto certificationDto) {
         certificationDto.setPurpose("회원가입 인증메일");
-        return ResponseEntity.ok(authService.sendCertificationEmail(certificationDto));
+        authService.sendCertificationEmail(certificationDto);
     }
     @PostMapping("/email/send/id")
-    public ResponseEntity<ResponseDto<?>> sendEmailForId(@RequestBody @Valid CertificationRequestDto certificationDto){
+    @ResponseStatus(HttpStatus.OK)
+    public void sendEmailForId(@RequestBody @Valid CertificationRequestDto certificationDto){
         certificationDto.setPurpose("아이디 찾기 인증메일");
-        return ResponseEntity.ok(authService.sendCertificationEmail(certificationDto));
+        authService.sendCertificationEmail(certificationDto);
     }
     @PostMapping("/email/send/password")
-    public ResponseEntity<ResponseDto<?>> sendEmailForPassword(@RequestBody @Valid FindPasswordRequestDto findPasswordRequestDto){
+    @ResponseStatus(HttpStatus.OK)
+    public void sendEmailForPassword(@RequestBody @Valid FindPasswordRequestDto findPasswordRequestDto){
         findPasswordRequestDto.setPurpose("비밀번호 찾기 인증메일");
-        return ResponseEntity.ok(authService.sendCertificationEmailForPassword(findPasswordRequestDto));
+        authService.sendCertificationEmailForPassword(findPasswordRequestDto);
     }
 
     @PostMapping("/email/certification")
-    public ResponseEntity<ResponseDto<?>> certificationEmail(@RequestBody @Valid CertificationRequestDto certificationDto){
-        return ResponseEntity.ok(authService.certificationEmail(certificationDto));
+    @ResponseStatus(HttpStatus.OK)
+    public void certificationEmail(@RequestBody @Valid CertificationRequestDto certificationDto){
+        authService.certificationEmail(certificationDto);
     }
 
     @PostMapping("/email/certification/id")

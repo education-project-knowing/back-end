@@ -20,7 +20,7 @@ public class StudyService {
     private final UserRepository userRepository;
     private final FolderRepository folderRepository;
 
-    public ResponseDto<?> study(Long fNo, String username, StudyRequestDto studyRequestDto){
+    public void study(Long fNo, String username, StudyRequestDto studyRequestDto){
         Study study = studyRepository.findStudyByUserUsernameAndFolderFNo(username, fNo)
                 .orElse(Study.builder()
                         .folder(folderRepository.findById(fNo).orElseThrow(()-> new BusinessLogicException(BusinessError.FOLDER_NOT_FOUND)))
@@ -30,6 +30,5 @@ public class StudyService {
         study.study(studyRequestDto.getStudyTimeSeconds());
 
         studyRepository.save(study);
-        return new ResponseDto<>(200, "공부 시간 저장 완료");
     }
 }

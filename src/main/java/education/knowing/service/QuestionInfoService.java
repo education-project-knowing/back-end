@@ -25,7 +25,7 @@ public class QuestionInfoService {
     private final QuestionRepository questionRepository;
     private final UserRepository userRepository;
 
-    public ResponseDto<?> createOrUpdateQuestionInfo(String username, Long qNo, QuestionInfoRequestDto questionInfoRequestDto){
+    public void createOrUpdateQuestionInfo(String username, Long qNo, QuestionInfoRequestDto questionInfoRequestDto){
         Optional<QuestionInfo> optionalQuestionInfo = questionInfoRepository.findByUserUsernameAndQuestionQNo(username, qNo);
 
         Importance importance = questionInfoRequestDto.getImportance();
@@ -54,7 +54,5 @@ public class QuestionInfoService {
             questionInfo.updateQuestionInfo(importance, isRecognized);
         }
         questionInfoRepository.save(questionInfo);
-
-        return new ResponseDto<>(200, "퀴즈 수정");
     }
 }

@@ -21,15 +21,17 @@ public class OpinionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(opinionService.sendOpinion(username, opinionRequestDto));
     }
     @PutMapping("/{opinionId}")
-    public ResponseEntity<ResponseDto<?>> updateOpinion(@PathVariable Long opinionId, @RequestBody OpinionRequestDto opinionRequestDto){
+    @ResponseStatus(HttpStatus.OK)
+    public void updateOpinion(@PathVariable Long opinionId, @RequestBody OpinionRequestDto opinionRequestDto){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return ResponseEntity.ok(opinionService.updateOpinion(opinionId, username, opinionRequestDto));
+        opinionService.updateOpinion(opinionId, username, opinionRequestDto);
     }
 
     @DeleteMapping("/{opinionId}")
-    public ResponseEntity<ResponseDto<?>> deleteOpinion(@PathVariable Long opinionId, @RequestBody OpinionRequestDto opinionRequestDto){
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteOpinion(@PathVariable Long opinionId, @RequestBody OpinionRequestDto opinionRequestDto){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return ResponseEntity.ok(opinionService.deleteOpinion(opinionId, username));
+        opinionService.deleteOpinion(opinionId, username);
     }
 
 }

@@ -118,7 +118,7 @@ public class QuestionService {
         return new QuestionResponseDto(result.getQNo(), result.getQuestion(), result.getAnswer());
     }
 
-    public ResponseDto<?> updateQuestion(Long qNo, String username, QuestionRequestDto questionRequestDto){
+    public void updateQuestion(Long qNo, String username, QuestionRequestDto questionRequestDto){
         Question question = questionRepository.findById(qNo).orElseThrow(
                 ()-> new BusinessLogicException(BusinessError.QUESTION_NOT_FOUND)
         );
@@ -131,7 +131,6 @@ public class QuestionService {
 
         questionRepository.save(question);
 
-        return new ResponseDto<>(200, "문답 수정 완료");
     }
     public ResponseDto<?> deleteQuestion(Long qNo, String username){
         Question question = questionRepository.findById(qNo).orElseThrow(

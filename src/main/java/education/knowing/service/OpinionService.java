@@ -55,7 +55,7 @@ public class OpinionService {
 
         return new OpinionResponseDto(result.getOpinionId(), result.getCreatedBy(), result.getOpinion(), result.getCreatedDate());
     }
-    public ResponseDto<?> updateOpinion(Long opinionId, String username, OpinionRequestDto opinionRequestDto){
+    public void updateOpinion(Long opinionId, String username, OpinionRequestDto opinionRequestDto){
         Opinion opinion = opinionRepository.findById(opinionId)
                 .orElseThrow(()-> new BusinessLogicException(BusinessError.OPINION_NOT_FOUND));
 
@@ -64,11 +64,9 @@ public class OpinionService {
         }
 
         opinion.updateOpinion(opinionRequestDto.getOpinion());
-
-        return new ResponseDto<>(200, "사용자 의견 수정");
     }
 
-    public ResponseDto<?> deleteOpinion(Long opinionId, String username){
+    public void deleteOpinion(Long opinionId, String username){
         Opinion opinion = opinionRepository.findById(opinionId).orElseThrow(
                 ()-> new BusinessLogicException(BusinessError.OPINION_NOT_FOUND)
         );
@@ -78,7 +76,5 @@ public class OpinionService {
         }
 
         opinionRepository.deleteById(opinionId);
-
-        return new ResponseDto<>(200, "사용자 의견 수정");
     }
 }

@@ -16,11 +16,9 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public ResponseDto<?> changePassword(ChangePasswordDto changePasswordDto){
+    public void changePassword(ChangePasswordDto changePasswordDto){
         User user = userRepository.findByUsername(changePasswordDto.getUsername()).get();
 
         user.changePassword(passwordEncoder.encode(changePasswordDto.getPassword()));
-
-        return new ResponseDto<>(200, "비밀번호 변경");
     }
 }
