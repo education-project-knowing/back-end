@@ -1,7 +1,6 @@
 package education.knowing.service.oauth;
 
 import education.knowing.constant.Role;
-import education.knowing.dto.user.UserDto;
 import education.knowing.dto.oauth.KakaoResponse;
 import education.knowing.dto.oauth.NaverResponse;
 import education.knowing.dto.oauth.OAuthResponse;
@@ -53,22 +52,13 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
             userRepository.save(user);
 
-            UserDto userDto = UserDto.builder()
-                    .username(username)
-                    .nickname(user.getNickname())
-                    .role(user.getRole().getAuthority())
-                    .build();
 
-            return new CustomOAuth2User(userDto);
+            return new CustomOAuth2User(user);
         } else{
             User existData = optionalUser.get();
-            UserDto userDto = UserDto.builder()
-                    .username(existData.getUsername())
-                    .nickname(existData.getNickname())
-                    .role(existData.getRole().getAuthority())
-                    .build();
 
-            return new CustomOAuth2User(userDto);
+
+            return new CustomOAuth2User(existData);
         }
 
     }

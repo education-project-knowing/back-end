@@ -1,6 +1,6 @@
 package education.knowing.entity.userdetails;
 
-import education.knowing.dto.user.UserDto;
+import education.knowing.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,28 +9,28 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class CustomUserDetails  implements UserDetails {
-    private final UserDto userDto;
-    public CustomUserDetails(UserDto userDto) {
-        this.userDto = userDto;
+    private final User user;
+    public CustomUserDetails(User user) {
+        this.user = user;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         //유저 역할
-        authorities.add(new SimpleGrantedAuthority(userDto.getRole()));
+        authorities.add(new SimpleGrantedAuthority(user.getRole().getAuthority()));
 
         return authorities;
     }
 
     @Override
     public String getPassword() {
-        return userDto.getPassword();
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return userDto.getUsername();
+        return user.getUsername();
     }
 
     @Override
@@ -50,6 +50,6 @@ public class CustomUserDetails  implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return !user.isWithdrawn();
     }
 }

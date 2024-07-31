@@ -1,6 +1,5 @@
 package education.knowing.service.jwt;
 
-import education.knowing.dto.user.UserDto;
 import education.knowing.entity.userdetails.CustomUserDetails;
 import education.knowing.entity.User;
 import education.knowing.repository.UserRepository;
@@ -19,7 +18,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException("존재하지 않는 아이디"));
 
-        return new CustomUserDetails(UserDto.from(user));
+        return new CustomUserDetails(user);
     }
 
 }

@@ -1,6 +1,7 @@
 package education.knowing.filter;
 
-import education.knowing.dto.user.UserDto;
+import education.knowing.constant.Role;
+import education.knowing.entity.User;
 import education.knowing.entity.userdetails.CustomUserDetails;
 import education.knowing.util.JwtUtil;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -75,9 +76,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String role = jwtUtil.getRole(accessToken);
 
         //Authentication 에 등록할 UserDetails 생성
-        CustomUserDetails userDetails = new CustomUserDetails(UserDto.builder()
+        CustomUserDetails userDetails = new CustomUserDetails(User.builder()
                 .username(username)
-                .role(role)
+                .role(Role.valueOf(role))
                 .build());
 
         Authentication authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
