@@ -1,7 +1,6 @@
 package education.knowing.controller;
 
 import education.knowing.dto.auth.request.*;
-import education.knowing.dto.ResponseDto;
 import education.knowing.dto.auth.response.CertificationResponseDto;
 import education.knowing.dto.auth.response.SignUpResponseDto;
 import education.knowing.service.AuthService;
@@ -17,23 +16,27 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     private final AuthService authService;
     @PostMapping("/sign-up")
-    public ResponseEntity<SignUpResponseDto> join(@RequestBody @Valid SignUpRequestDto userSignUpDto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(authService.join(userSignUpDto));
+    @ResponseStatus(HttpStatus.CREATED)
+    public SignUpResponseDto join(@RequestBody @Valid SignUpRequestDto userSignUpDto) {
+        return authService.join(userSignUpDto);
     }
 
     @PostMapping("/id-check")
-    public ResponseEntity<Boolean> checkId(@RequestBody @Valid IdCheckRequestDto idCheckRequestDto){
-        return ResponseEntity.ok(authService.idCheck(idCheckRequestDto.getUsername()));
+    @ResponseStatus(HttpStatus.OK)
+    public boolean checkId(@RequestBody @Valid IdCheckRequestDto idCheckRequestDto){
+        return authService.idCheck(idCheckRequestDto.getUsername());
     }
 
     @PostMapping("/email-check")
-    public ResponseEntity<Boolean> checkEmail(@RequestBody @Valid EmailCheckRequestDto emailCheckRequestDto){
-        return ResponseEntity.ok(authService.emailCheck(emailCheckRequestDto.getEmail()));
+    @ResponseStatus(HttpStatus.OK)
+    public boolean checkEmail(@RequestBody @Valid EmailCheckRequestDto emailCheckRequestDto){
+        return authService.emailCheck(emailCheckRequestDto.getEmail());
     }
 
     @PostMapping("/nickname-check")
-    public ResponseEntity<Boolean> checkNickname(@RequestBody @Valid NicknameCheckRequestDto nicknameCheckRequestDto){
-        return ResponseEntity.ok(authService.nicknameCheck(nicknameCheckRequestDto.getNickname()));
+    @ResponseStatus(HttpStatus.OK)
+    public boolean checkNickname(@RequestBody @Valid NicknameCheckRequestDto nicknameCheckRequestDto){
+        return authService.nicknameCheck(nicknameCheckRequestDto.getNickname());
     }
 
     @PostMapping("/email/send")

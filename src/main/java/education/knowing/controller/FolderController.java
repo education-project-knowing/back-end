@@ -3,14 +3,11 @@ package education.knowing.controller;
 import education.knowing.dto.folder.request.FolderRequestDto;
 import education.knowing.dto.folder.request.StudyRequestDto;
 import education.knowing.dto.folder.response.FolderResponseDto;
-import education.knowing.dto.ResponseDto;
 import education.knowing.service.FolderService;
 import education.knowing.service.StudyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,14 +20,16 @@ public class FolderController {
     private final FolderService folderService;
     private final StudyService studyService;
     @GetMapping("/list")
-    public ResponseEntity<List<FolderResponseDto>> getList(){
+    @ResponseStatus(HttpStatus.OK)
+    public List<FolderResponseDto> getList(){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        return ResponseEntity.ok(folderService.getFolderList(username));
+        return folderService.getFolderList(username);
     }
     @PostMapping
-    public ResponseEntity<FolderResponseDto> register(@RequestBody @Valid FolderRequestDto folderRequestDto){
-        return ResponseEntity.status(HttpStatus.CREATED).body(folderService.createFolder(folderRequestDto));
+    @ResponseStatus(HttpStatus.CREATED)
+    public FolderResponseDto register(@RequestBody @Valid FolderRequestDto folderRequestDto){
+        return folderService.createFolder(folderRequestDto);
     }
 
     @PutMapping("/{fNo}")

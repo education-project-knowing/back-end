@@ -26,35 +26,41 @@ public class QuestionController {
     private final QuestionInfoService questionInfoService;
 
     @GetMapping("/list")
-    public ResponseEntity<PageResponseDto<QuestionResponseDto>> getList(@RequestBody QuestionPageRequestDto questionPageRequestDto){
+    @ResponseStatus(HttpStatus.OK)
+    public PageResponseDto<QuestionResponseDto> getList(@RequestBody QuestionPageRequestDto questionPageRequestDto){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return ResponseEntity.ok(questionService.getQuestionList(username, questionPageRequestDto));
+        return questionService.getQuestionList(username, questionPageRequestDto);
     }
     @GetMapping("/list/{fNo}")
-    public ResponseEntity<PageResponseDto<QuestionResponseDto>> getListByFolder(@PathVariable Long fNo, @RequestBody QuestionPageRequestDto questionPageRequestDto){
+    @ResponseStatus(HttpStatus.OK)
+    public PageResponseDto<QuestionResponseDto> getListByFolder(@PathVariable Long fNo, @RequestBody QuestionPageRequestDto questionPageRequestDto){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return ResponseEntity.ok(questionService.getQuestionListByFolder(fNo,username, questionPageRequestDto));
+        return questionService.getQuestionListByFolder(fNo,username, questionPageRequestDto);
     }
     @GetMapping("/{qNo}")
-    public ResponseEntity<QuestionResponseDto> getQuestion(@PathVariable Long qNo){
+    @ResponseStatus(HttpStatus.OK)
+    public QuestionResponseDto getQuestion(@PathVariable Long qNo){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return ResponseEntity.ok(questionService.getQuestion(qNo, username));
+        return questionService.getQuestion(qNo, username);
     }
 
     @GetMapping("/quiz")
-    public ResponseEntity<List<QuestionResponseDto>> getQuiz(){
+    @ResponseStatus(HttpStatus.OK)
+    public List<QuestionResponseDto> getQuiz(){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return ResponseEntity.ok(quizService.getQuizList(username));
+        return quizService.getQuizList(username);
     }
 
     @PostMapping
-    public ResponseEntity<QuestionResponseDto> createQuestion(@RequestBody QuestionRequestDto questionRequestDto){
-        return ResponseEntity.status(HttpStatus.CREATED).body(questionService.createQuestion(questionRequestDto));
+    @ResponseStatus(HttpStatus.CREATED)
+    public QuestionResponseDto createQuestion(@RequestBody QuestionRequestDto questionRequestDto){
+        return questionService.createQuestion(questionRequestDto);
     }
 
     @PostMapping("/{fNo}")
-    public ResponseEntity<QuestionResponseDto> createQuestion(@PathVariable Long fNo, @RequestBody QuestionRequestDto questionRequestDto){
-        return ResponseEntity.status(HttpStatus.CREATED).body(questionService.createQuestion(fNo, questionRequestDto));
+    @ResponseStatus(HttpStatus.CREATED)
+    public QuestionResponseDto createQuestion(@PathVariable Long fNo, @RequestBody QuestionRequestDto questionRequestDto){
+        return questionService.createQuestion(fNo, questionRequestDto);
     }
 
     @PutMapping("/{qNo}")
@@ -72,6 +78,7 @@ public class QuestionController {
     }
 
     @PutMapping("/info/{qNo}")
+    @ResponseStatus(HttpStatus.OK)
     public void createOrUpdateQuestionInfo(@PathVariable Long qNo, @RequestBody QuestionInfoRequestDto questionInfoRequestDto){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         questionInfoService.createOrUpdateQuestionInfo(username, qNo, questionInfoRequestDto);

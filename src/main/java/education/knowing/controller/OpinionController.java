@@ -16,9 +16,10 @@ import org.springframework.web.bind.annotation.*;
 public class OpinionController {
     private final OpinionService opinionService;
     @PostMapping
-    public ResponseEntity<OpinionResponseDto> sendOpinion(@RequestBody OpinionRequestDto opinionRequestDto){
+    @ResponseStatus(HttpStatus.CREATED)
+    public OpinionResponseDto sendOpinion(@RequestBody OpinionRequestDto opinionRequestDto){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return ResponseEntity.status(HttpStatus.CREATED).body(opinionService.sendOpinion(username, opinionRequestDto));
+        return opinionService.sendOpinion(username, opinionRequestDto);
     }
     @PutMapping("/{opinionId}")
     @ResponseStatus(HttpStatus.OK)
