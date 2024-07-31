@@ -48,10 +48,6 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     Page<QuestionResponseDto> findAllByFolderWithUser(@Param("fNo")Long fNo, @Param("username") String username, @Param("keyword") String keyword,
                                                       @Param("recognized") Boolean recognized, @Param("importance")List<Importance> importance, Pageable pageable);
 
-    @Query("select new education.knowing.dto.question.response.QuestionResponseDto(q.qNo, q.question, q.answer) " +
-            "from Question q left join q.questionInfoList qi " +
-            "where qi.user.username = :username and qi.isRecognized = false")
-    List<QuestionResponseDto> findAllQuizByUser(@Param("username") String username);
 
     @Query("select new education.knowing.dto.question.response.QuestionResponseDto(q.qNo, q.question, q.answer, qi.importance, qi.isRecognized) " +
             "from Question q " +

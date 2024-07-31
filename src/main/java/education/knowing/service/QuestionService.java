@@ -74,10 +74,6 @@ public class QuestionService {
         }
     }
 
-    @Transactional(readOnly = true)
-    public List<QuestionResponseDto> getQuizList(String username){
-        return questionRepository.findAllQuizByUser(username);
-    }
 
     public QuestionResponseDto createQuestion(QuestionRequestDto questionRequestDto){
         Question question = Question.builder()

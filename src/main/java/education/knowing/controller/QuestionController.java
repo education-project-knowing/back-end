@@ -7,6 +7,7 @@ import education.knowing.dto.question.response.QuestionResponseDto;
 import education.knowing.dto.paging.response.PageResponseDto;
 import education.knowing.service.QuestionInfoService;
 import education.knowing.service.QuestionService;
+import education.knowing.service.QuizService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import java.util.List;
 @RequestMapping("/api/question")
 public class QuestionController {
     private final QuestionService questionService;
+    private final QuizService quizService;
     private final QuestionInfoService questionInfoService;
 
     @GetMapping("/list")
@@ -42,7 +44,7 @@ public class QuestionController {
     @GetMapping("/quiz")
     public ResponseEntity<List<QuestionResponseDto>> getQuiz(){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return ResponseEntity.ok(questionService.getQuizList(username));
+        return ResponseEntity.ok(quizService.getQuizList(username));
     }
 
     @PostMapping
