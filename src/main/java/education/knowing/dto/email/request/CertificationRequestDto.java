@@ -1,4 +1,4 @@
-package education.knowing.dto.auth.request;
+package education.knowing.dto.email.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

@@ -1,7 +1,7 @@
 package education.knowing.service.oauth;
 
 import education.knowing.constant.Role;
-import education.knowing.dto.UserDto;
+import education.knowing.dto.user.UserDto;
 import education.knowing.dto.oauth.KakaoResponse;
 import education.knowing.dto.oauth.NaverResponse;
 import education.knowing.dto.oauth.OAuthResponse;

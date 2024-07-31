@@ -1,6 +1,6 @@
 package education.knowing.filter;
 
-import education.knowing.dto.UserDto;
+import education.knowing.dto.user.UserDto;
 import education.knowing.entity.userdetails.CustomUserDetails;
 import education.knowing.util.JwtUtil;
 import io.jsonwebtoken.ExpiredJwtException;

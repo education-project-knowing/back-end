@@ -1,6 +1,6 @@
 package education.knowing.service.jwt;
 
-import education.knowing.dto.UserDto;
+import education.knowing.dto.user.UserDto;
 import education.knowing.entity.userdetails.CustomUserDetails;
 import education.knowing.entity.User;
 import education.knowing.repository.UserRepository;

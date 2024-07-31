@@ -1,4 +1,4 @@
-package education.knowing.dto;
+package education.knowing.dto.user;
 
 import education.knowing.entity.User;
 import lombok.*;

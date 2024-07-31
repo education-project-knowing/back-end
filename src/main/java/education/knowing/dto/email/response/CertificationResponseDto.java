@@ -1,4 +1,4 @@
-package education.knowing.dto.auth.response;
+package education.knowing.dto.email.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
