@@ -30,6 +30,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    public void changeNickname(String nickname){
+        this.nickname = nickname;
+    }
+    public void changeEmail(String email){this.email = email;}
     public void changePassword(String password){
         this.password = password;
     }

@@ -68,9 +68,11 @@ public class SecurityConfig {
                 )
 
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/login", "/api/auth/**", "/api/reissue").permitAll()
+                        .requestMatchers("/login", "/api/auth/**", "/api/email/**", "/api/reissue").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/question/quiz").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/user").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/email/email/send/modify").authenticated()
                         .anyRequest().authenticated()
                 )
 
