@@ -11,5 +11,5 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CertificationResponseDto {
-    private String certificationNumber;
+    private String username;
 }

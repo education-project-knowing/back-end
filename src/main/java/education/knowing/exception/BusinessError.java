@@ -7,6 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum BusinessError {
     //400 (잘못된 요청)
+    WRONG_ID_OR_EMAIL(400, "아이디 혹은 이메일이 틀렸습니다."),
     CERTIFICATION_FAIL(400, "이메일 인증 실패"),
     OPINION_SUBMIT_LIMITED_TO_10MINUTES(400, "10분 이내 사용자 의견 재작성 불가"),
     IMPORTANCE_SETTING_ERROR(400, "문답 중요도는 HIGH, MEDIUM, LOW 만 입력 가능합니다."),

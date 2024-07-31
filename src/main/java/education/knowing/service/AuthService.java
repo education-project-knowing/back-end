@@ -2,6 +2,7 @@ package education.knowing.service;
 
 import education.knowing.constant.Role;
 import education.knowing.dto.auth.request.CertificationRequestDto;
+import education.knowing.dto.auth.request.FindPasswordRequestDto;
 import education.knowing.dto.auth.request.SignUpRequestDto;
 import education.knowing.dto.ResponseDto;
 import education.knowing.dto.auth.response.CertificationResponseDto;
@@ -69,7 +70,12 @@ public class AuthService {
         return userRepository.existsByNickname(nickname);
     }
 
-    public CertificationResponseDto sendCertificationEmail(CertificationRequestDto certificationDto){
+    public ResponseDto<?> sendCertificationEmail(CertificationRequestDto certificationDto){
+        //이메일이 존재하지 않으면
+        if(!emailCheck(certificationDto.getEmail())){
+            throw new BusinessLogicException(BusinessError.EMAIL_NOT_FOUND);
+        }
+
         String email = certificationDto.getEmail();
         String certificationNumber = createCertificationNumber();
 
@@ -79,14 +85,21 @@ public class AuthService {
                 .build();
 
         try {
-            mailSendUtil.sendCertificationMail(email, "회원가입 인증번호 도착", certificationNumber);
+            mailSendUtil.sendCertificationMail(email, certificationDto.getPurpose(), certificationNumber);
         } catch (MessagingException e) {
             throw new BusinessLogicException(BusinessError.MAIL_FAIL);
         }
 
         certificationRepository.save(emailCertification);
 
-        return new CertificationResponseDto(certificationNumber);
+        return new ResponseDto<>(200, "인증 메일 전송");
+    }
+
+    public ResponseDto<?> sendCertificationEmailForPassword(FindPasswordRequestDto findPasswordRequestDto) {
+        if(userRepository.existsByUsernameAndEmail(findPasswordRequestDto.getId(), findPasswordRequestDto.getEmail())){
+            throw new BusinessLogicException(BusinessError.WRONG_ID_OR_EMAIL);
+        }
+        return sendCertificationEmail(findPasswordRequestDto);
     }
 
     public ResponseDto<?> certificationEmail(CertificationRequestDto certificationDto){
@@ -100,7 +113,18 @@ public class AuthService {
 
         return new ResponseDto<>(200, "이메일 인증 성공");
     }
+    public CertificationResponseDto certificationEmailForId(CertificationRequestDto certificationDto) {
+        if(!certificationRepository.existsByEmailAndCertificationNumber(
+                certificationDto.getEmail(),
+                certificationDto.getCertificationNumber())){
+            throw new BusinessLogicException(BusinessError.CERTIFICATION_FAIL);
+        }
+        User user = userRepository.findByEmail(certificationDto.getEmail());
 
+        certificationRepository.deleteById(certificationDto.getEmail());
+
+        return new CertificationResponseDto(user.getUsername());
+    }
 
     private String createCertificationNumber(){
         Random random = new Random();
@@ -111,5 +135,4 @@ public class AuthService {
         }
         return certificationNumber.toString();
     }
-
 }

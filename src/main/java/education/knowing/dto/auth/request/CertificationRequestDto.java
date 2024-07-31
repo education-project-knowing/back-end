@@ -13,4 +13,7 @@ public class CertificationRequestDto {
     private String email;
 
     private String certificationNumber;
+
+    @Setter
+    private String purpose;
 }
