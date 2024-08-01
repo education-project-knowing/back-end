@@ -35,4 +35,11 @@ public class UserController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         userService.changeNickname(username, changeNicknameDto.getNickname());
     }
+
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void withDrawn(){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        userService.withDrawn(username);
+    }
 }

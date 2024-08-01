@@ -68,7 +68,7 @@ public class SecurityConfig {
                 )
 
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/login", "/api/auth/**", "/api/email/**", "/api/reissue").permitAll()
+                        .requestMatchers("/api/login", "/api/auth/**", "/api/email/**", "/api/reissue").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/question/quiz").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/user").authenticated()
@@ -110,5 +110,4 @@ public class SecurityConfig {
 
         return source;
     }
-
 }

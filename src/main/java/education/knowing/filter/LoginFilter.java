@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -54,7 +55,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         String username = authResult.getName();
-
         Collection<? extends GrantedAuthority> authorities = authResult.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
@@ -74,10 +74,11 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        if(failed instanceof DisabledException){
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write("{\"status\" : 401, \"message\" : \"인증되지 않음\"}");
     }
 
     private Cookie createCookie(String key, String value) {

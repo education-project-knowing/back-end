@@ -42,4 +42,11 @@ public class UserService {
 
         user.changePassword(passwordEncoder.encode(changePasswordDto.getPassword()));
     }
+
+    public void withDrawn(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new BusinessLogicException(BusinessError.USER_NOT_FOUND));
+
+        user.withdrawn();
+    }
 }

@@ -39,4 +39,12 @@ public class User {
     public void changePassword(String password){
         this.password = password;
     }
+
+    public void withdrawn(){
+        this.email = null;
+        this.password = null;
+        this.role = null;
+        this.nickname = "탈퇴한 회원";
+        this.isWithdrawn = true;
+    }
 }
