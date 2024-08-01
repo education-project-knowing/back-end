@@ -78,7 +78,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         //Authentication 에 등록할 UserDetails 생성
         PrincipalDetails userDetails = new PrincipalDetails(User.builder()
                 .username(username)
-                .role(Role.valueOf(role))
+                .role(Role.roleByAuthority(role))
                 .build());
 
         Authentication authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

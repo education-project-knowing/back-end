@@ -10,4 +10,8 @@ public enum Role {
     ADMIN("ROLE_ADMIN");
 
     private final String authority;
+
+    public static Role roleByAuthority(String authority){
+        return Role.valueOf(authority.replace("ROLE_", ""));
+    }
 }
