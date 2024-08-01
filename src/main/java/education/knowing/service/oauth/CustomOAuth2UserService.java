@@ -5,7 +5,7 @@ import education.knowing.dto.oauth.KakaoResponse;
 import education.knowing.dto.oauth.NaverResponse;
 import education.knowing.dto.oauth.OAuthResponse;
 import education.knowing.entity.User;
-import education.knowing.entity.oauth.CustomOAuth2User;
+import education.knowing.entity.principal.PrincipalDetails;
 import education.knowing.repository.UserRepository;
 import education.knowing.util.RandomNicknameUtil;
 import lombok.RequiredArgsConstructor;
@@ -53,12 +53,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             userRepository.save(user);
 
 
-            return new CustomOAuth2User(user);
+            return new PrincipalDetails(user);
         } else{
             User existData = optionalUser.get();
 
 
-            return new CustomOAuth2User(existData);
+            return new PrincipalDetails(existData);
         }
 
     }

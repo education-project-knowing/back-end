@@ -1,6 +1,6 @@
 package education.knowing.handler;
 
-import education.knowing.entity.oauth.CustomOAuth2User;
+import education.knowing.entity.principal.PrincipalDetails;
 import education.knowing.util.JwtUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -23,7 +23,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
+        PrincipalDetails customOAuth2User = (PrincipalDetails) authentication.getPrincipal();
 
         String username = customOAuth2User.getName();
 

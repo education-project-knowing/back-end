@@ -1,6 +1,6 @@
 package education.knowing.service.jwt;
 
-import education.knowing.entity.userdetails.CustomUserDetails;
+import education.knowing.entity.principal.PrincipalDetails;
 import education.knowing.entity.User;
 import education.knowing.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException("존재하지 않는 아이디"));
 
-        return new CustomUserDetails(user);
+        return new PrincipalDetails(user);
     }
 
 }
