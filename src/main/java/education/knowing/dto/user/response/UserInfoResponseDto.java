@@ -2,7 +2,9 @@ package education.knowing.dto.user.response;
 
 import education.knowing.entity.User;
 import lombok.Builder;
+import lombok.Getter;
 
+@Getter
 @Builder
 public class UserInfoResponseDto {
     private String username;
